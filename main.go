@@ -13,5 +13,13 @@ func main() {
 
 	board := boards.NewBoard(rows, columns, players)
 	board.RandomizeBoard()
-	fmt.Printf("[RANDOMIZED BOARD]:\n%+v\n\n", board.GetBoard())
+	fmt.Printf("[RANDOMIZED BOARD]:\n%+v\n\n", board.GetBoard().Rows)
+
+	board.RoundRows()
+	fmt.Printf("[ROUNDED BOARD]:\n%+v\n\n", board.GetBoard().Rows)
+
 }
+
+
+// TODO: Create Makefile
+// TODO: Create unit and integration tests

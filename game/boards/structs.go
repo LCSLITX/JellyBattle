@@ -10,18 +10,16 @@ type Button struct {
 	Special   Special
 }
 
-// Struct Buttons refers to a specific ROW in the board grid.
+// Struct Row refers to a specific button row in the board grid.
 type Row []Button
 
-// Struct Special refers to spells that goes in each button that is not empty.
-// TODO: Think about adding Charges attributes as some buffs have fixed charges values. Each charge lasts for one round.
+// Struct Special refers to powers that goes in each button that is not empty.
 type Special struct {
 	ID         uint8
 	Type       string // Weapon (Pink), Buff (Blue), Utility (Yellow), Trap (Red), Healing (Green) or Empty(No color).
 	Name       string
-	Multiplier uint8  // used only for healing and Trap. Other type of special have fixed value.
-	// Effect     string // used only for buffs spells. Otherwise "".
-	// Power      uint8  // used only for attack spells. Otherwise 0.
+	Multiplier uint8 // used only for healing. Other type of special have fixed value.
+	// Charges    uint8 // TODO: Think about adding Charges attributes as some buffs have fixed charges values. Each charge lasts for one round.
 }
 
 type Specials []Special

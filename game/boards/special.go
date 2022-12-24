@@ -58,7 +58,7 @@ var specials Specials = Specials{
 	{ID: uint8(specialName(1).EnumIndex()), Type: specialType(0).String(), Name: specialName(1).String(), Multiplier: 1},
 	{ID: uint8(specialName(2).EnumIndex()), Type: specialType(0).String(), Name: specialName(2).String(), Multiplier: 1},
 	{ID: uint8(specialName(3).EnumIndex()), Type: specialType(0).String(), Name: specialName(3).String(), Multiplier: 1},
-	{ID: uint8(specialName(4).EnumIndex()), Type: specialType(0).String(), Name: specialName(4).String(), Multiplier: 1}, // TODO: The hit of this special varies 25, 35 and 50.
+	{ID: uint8(specialName(4).EnumIndex()), Type: specialType(0).String(), Name: specialName(4).String(), Multiplier: 1}, // TODO: The damage of this special varies 25, 35 and 50.
 	{ID: uint8(specialName(5).EnumIndex()), Type: specialType(0).String(), Name: specialName(5).String(), Multiplier: 1},
 	// Buff (Blue)
 	{ID: uint8(specialName(6).EnumIndex()), Type: specialType(1).String(), Name: specialName(6).String(), Multiplier: 1},
@@ -70,7 +70,7 @@ var specials Specials = Specials{
 	// Utility (Yellow)
 	{ID: uint8(specialName(12).EnumIndex()), Type: specialType(2).String(), Name: specialName(12).String(), Multiplier: 1},
 	// Trap (Red)
-	{ID: uint8(specialName(13).EnumIndex()), Type: specialType(3).String(), Name: specialName(13).String(), Multiplier: 1} ,
+	{ID: uint8(specialName(13).EnumIndex()), Type: specialType(3).String(), Name: specialName(13).String(), Multiplier: 1},
 	// Healing (Green)
 	{ID: uint8(specialName(14).EnumIndex()), Type: specialType(4).String(), Name: specialName(14).String(), Multiplier: 1},
 	{ID: uint8(specialName(15).EnumIndex()), Type: specialType(4).String(), Name: specialName(15).String(), Multiplier: 1},
