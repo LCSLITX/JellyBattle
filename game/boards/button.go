@@ -1,7 +1,7 @@
 package boards
 
 import (
-	"github.com/lucassauro/J.B.Remake/game_logic/utils"
+	"github.com/lucassauro/J.B.Remake/game/utils"
 )
 
 // func NewButton(row, column uint8) (button Button) {

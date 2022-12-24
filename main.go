@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/lucassauro/J.B.Remake/game_logic/boards"
+	"github.com/lucassauro/J.B.Remake/game/boards"
 )
 
 func main() {

@@ -1,7 +1,7 @@
 package boards
 
 import (
-	"github.com/lucassauro/J.B.Remake/game_logic/utils"
+	"github.com/lucassauro/J.B.Remake/game/utils"
 )
 
 // Check out more struct based enums: https://threedots.tech/post/safer-enums-in-go/
