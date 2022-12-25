@@ -1,7 +1,5 @@
 package boards
 
-// _____ BOARD STRUCTS _____
-
 // Struct button refers to each button in the the board grid.
 type Button struct {
 	Row       uint8 // Not sure if this will be used. I think yes because a button apparently must have a row.
@@ -29,7 +27,7 @@ type Board struct {
 	RowNumber          uint8  // Quantity of rows.
 	ColumnNumber       uint8  // Quantity of columns.
 	NumberOfButtons    uint64 // Quantity of buttons in the grid.
-	Players            uint8  // Quantity of players.
+	PlayersNumber      uint8  // Quantity of players.
 	SpecialFulfillment uint8  // Percentage of Empty spaces.
 	Rows               []Row  // Bi-dimensional array of Buttons. In a grid of 5x20, ButtonRows attribute would be equivalent to [5][20]Buttons.
 }

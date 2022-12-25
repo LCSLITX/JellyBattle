@@ -4,8 +4,8 @@ package boards
 func NewBoard(rows, columns, players uint8) IBoard {
 	b := &Board{}
 	b.GenerateBoard(rows, columns)
-	b.Players = players
-	b.SpecialFulfillment = SPECIAL_FULFILLMENT_DEFAULT
+	b.PlayersNumber = players
+	b.SpecialFulfillment = DEFAULT_SPECIAL_FULFILLMENT
 	return b
 }
 
@@ -57,7 +57,7 @@ func (board *Board) GenerateRow() (row Row) {
 
 // RoundRows rotates the board rows every round.
 func (board *Board) RoundRows() {
-	// TODO: Buttons attributes (Rows and Columns) are currently keeping original data. Need to decide if it needs to update Row number x to x+1, for example. 
+	// TODO: Buttons attributes (Rows and Columns) are currently keeping original data. Need to decide if it needs to update Row number x to x+1, for example.
 	r := board.GenerateRow()
 	board.Rows = board.Rows[1:]        // remove top element
 	board.Rows = append(board.Rows, r) // add last element
@@ -80,4 +80,17 @@ func (board *Board) countEmptyButtons() uint64 {
 		}
 	}
 	return uint64(q)
+}
+
+// UpdateBoard updates all the buttons of the board by calling updateButton method.
+func (board *Board) UpdateBoard() {
+	// VALIDATE this
+	// DONE: Buttons attributes (Rows and Columns) are currently keeping original data. Need to decide if it needs to update Row number x to x+1, for example.
+	rows, columns := board.RowNumber, board.ColumnNumber
+
+	for r := uint8(0); r < rows; r++ {
+		for c := uint8(0); c < columns; c++ {
+			board.Rows[r][c].UpdateButton(r, c)
+		}
+	}
 }

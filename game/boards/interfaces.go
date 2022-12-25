@@ -7,6 +7,8 @@ type IBoard interface {
 	GenerateBoard(rows, columns uint8)
 	// RandomizeBoard populates a board with buttons
 	RandomizeBoard()
+	// UpdateBoard updates the board buttons
+	UpdateBoard()
 
 	// RoundRows rotates the board rows every round.
 	RoundRows()
@@ -20,6 +22,10 @@ type IBoard interface {
 }
 
 type IButton interface {
-	// RandomizeButton generate an empty button or spell button
+	// RandomizeButton generate an empty button or special button
 	RandomizeButton()
+	// UpdateButton updates row and columns inside each button
+	UpdateButton(row, column uint8)
+	// EraseButtonSpecial updates a button by removing its special
+	EraseButtonSpecial()
 }
