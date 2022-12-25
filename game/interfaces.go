@@ -16,7 +16,7 @@ type IBoard interface {
 	RoundRows()
 	// GenerateRow generate one row at once
 	GenerateRow() Row
-	
+
 	// CountButtons return the quantity of buttons in the grid.
 	countButtons() uint64
 	// CountEmptyButtons return the quantity of empty and Fulfilled buttons.
@@ -38,14 +38,28 @@ type IButton interface {
 
 // TODO: Implementation of players package. Need to decide Player and Dummy structures.
 type IPLayer interface {
-	// CreateGame lets players create a game TODO: Maybe FindGame makes more sense
-	CreateGame() Game
+	// GetPlayer return a player.
+	GetPlayer() Player
 }
 
-type IDummy interface {}
+type IDummy interface{}
 
-
+type IPlayerList interface {
+	GetPlayerList() PlayerList
+	AddPlayer(Player)
+	RemovePlayer(Player)
+	FindPlayer(p Player) (i int)
+}
 
 // _____ GAMES _____
 
-type IGame interface {}
+type IGame interface {
+	// FindGame(Games) Game
+}
+
+// _____ GROUPS _____
+
+// type IGroups interface {
+// 	GetGroups() Groups
+// 	AddGroup(Group)
+// }
