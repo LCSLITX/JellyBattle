@@ -3,17 +3,17 @@ package main
 import (
 	"fmt"
 
-	"github.com/lucassauro/J.B.Remake/game/boards"
+	"github.com/lucassauro/J.B.Remake/game"
 )
 
 // https://stackoverflow.com/questions/28800672/how-to-add-new-methods-to-an-existing-type-in-go
 
 func main() {
-	rows := boards.DEFAULT_ROWS
-	columns := boards.DEFAULT_COLUMNS
-	players := boards.DEFAULT_PLAYERS_NUMBER
+	rows := game.DEFAULT_ROWS
+	columns := game.DEFAULT_COLUMNS
+	players := game.DEFAULT_PLAYERS_NUMBER
 
-	board := boards.NewBoard(rows, columns, players)
+	board := game.NewBoard(rows, columns, players)
 
 	original := board.GetBoard().Rows
 	for r := 0; r < len(original); r++ {
