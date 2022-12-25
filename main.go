@@ -1,57 +1,50 @@
 package main
 
 import (
-	"fmt"
+	"os"
 
 	"github.com/lucassauro/J.B.Remake/game"
 )
 
 // https://stackoverflow.com/questions/28800672/how-to-add-new-methods-to-an-existing-type-in-go
 
+// func main() {
+// 	os.Setenv("DEBUG_MODE", "true")
+// 	rows := game.DEFAULT_ROWS
+// 	columns := game.DEFAULT_COLUMNS
+// 	players := game.DEFAULT_PLAYERS_NUMBER
+// 	board := game.NewBoard(rows, columns, players)
+// 	board.RandomizeBoard()
+// 	board.RoundRows()
+// 	board.UpdateBoard()
+// }
+
 func main() {
-	rows := game.DEFAULT_ROWS
-	columns := game.DEFAULT_COLUMNS
-	players := game.DEFAULT_PLAYERS_NUMBER
+	os.Setenv("DEBUG_MODE", "true")
+	p1 := game.NewPlayer("Lucas")
+	p2 := game.NewPlayer("P2")
+	p3 := game.NewPlayer("P3")
+	p4 := game.NewPlayer("P4")
 
-	board := game.NewBoard(rows, columns, players)
+	playerList := game.NewPlayerList()
+	playerList.AddPlayer(p1.GetPlayer())
+	playerList.GetPlayerList()
+	playerList.AddPlayer(p2.GetPlayer())
+	playerList.GetPlayerList()
+	playerList.AddPlayer(p3.GetPlayer())
+	playerList.GetPlayerList()
+	playerList.AddPlayer(p4.GetPlayer())
+	playerList.GetPlayerList()
 
-	original := board.GetBoard().Rows
-	for r := 0; r < len(original); r++ {
-		for c := 0; c < len(original[r]); c++ {
-			fmt.Printf("ORIGINAL [SPECIALS]: %v [ROW:] %v \n %+v \n", original[r][c].Fulfilled, original[r][c].Row, original[r][c].Special)
-		}
-	}
-	fmt.Printf("\n")
+	playerList.FindPlayer(game.NewPlayer("B").GetPlayer()) // -1
+	playerList.FindPlayer(p1.GetPlayer()) // 0
 
+	playerList.RemovePlayer(p4.GetPlayer())
 
-	board.RandomizeBoard()
-	randomized := board.GetBoard().Rows
-	for r := 0; r < len(randomized); r++ {
-		for c := 0; c < len(randomized[r]); c++ {
-			fmt.Printf("RANDOMIZED [SPECIALS]: %v [ROW:] %v \n %+v \n", randomized[r][c].Fulfilled, randomized[r][c].Row, randomized[r][c].Special)
-		}
-	}
-	fmt.Printf("\n")
-
-	board.RoundRows()
-	nextRound := board.GetBoard().Rows
-	for r := 0; r < len(nextRound); r++ {
-		for c := 0; c < len(nextRound[r]); c++ {
-			fmt.Printf("NEXT ROUND BOARD: [SPECIALS]: %v [ROW:] %v \n %+v \n", nextRound[r][c].Fulfilled, nextRound[r][c].Row, nextRound[r][c].Special)
-		}
-	}
-	fmt.Printf("\n")
-	
-
-	board.UpdateBoard()
-	updated := board.GetBoard().Rows
-	for r := 0; r < len(updated); r++ {
-		for c := 0; c < len(updated[r]); c++ {
-			fmt.Printf("UPDATED BOARD: [SPECIALS]: %v [ROW:] %v \n %+v \n", updated[r][c].Fulfilled, updated[r][c].Row, updated[r][c].Special)
-		}
-	}
-	fmt.Printf("\n")
+	playerList.GetPlayerList()
 }
+
+
 
 
 // TODO: Create Makefile

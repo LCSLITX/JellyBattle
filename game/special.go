@@ -1,6 +1,8 @@
 package game
 
 import (
+	"fmt"
+
 	"github.com/lucassauro/J.B.Remake/game/utils"
 )
 
@@ -79,5 +81,9 @@ var specials Specials = Specials{
 // GenerateSpell returns a spell
 func GenerateSpecial() Special {
 	rand := utils.RandomNumber(ZERO_TO_FIFTEEN) // 5 possible random numbers
-	return specials[specialName(rand).EnumIndex()]
+	s := specials[specialName(rand).EnumIndex()]
+	if utils.DebugMode() {
+		fmt.Printf("%v: %+v\n\n", utils.Trace(), s)
+	}
+	return s
 }

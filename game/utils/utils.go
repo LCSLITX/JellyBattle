@@ -1,7 +1,11 @@
 package utils
 
 import (
+	"fmt"
 	"math/rand"
+	"os"
+	"runtime"
+	"strings"
 	"time"
 )
 
@@ -17,4 +21,18 @@ func randomSeed() (n int64) {
 	i2 := int64(rand.Int())
 	i3 := i1 + i2
 	return i3
+}
+
+func DebugMode() bool {
+	return os.Getenv("DEBUG_MODE") == "true"
+}
+
+func Trace() string {
+	pc := make([]uintptr, 15)
+	n := runtime.Callers(2, pc)
+	frames := runtime.CallersFrames(pc[:n])
+	frame, _ := frames.Next()
+	file := strings.Split(frame.File, "/")
+	function := strings.Split(frame.Function, "/")
+	return fmt.Sprintf("[%s:%d - %s]", file[7], frame.Line, function[3])
 }

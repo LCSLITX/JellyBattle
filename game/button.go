@@ -30,8 +30,9 @@ func (button *Button) UpdateButton(row, column uint8) {
 	button.Row, button.Column = row, column
 }
 
+// VALIDATE
+// DONE: Method to erase button. To be used when a player uses this very button. DEPENDS ON PLAYER AND GAME IMPLEMENTATIONS.
 // EraseButtonSpecial updates a button by removing its special
-// TODO: Method to erase button. To be used when a player uses this very button. DEPENDS ON PLAYER AND GAME IMPLEMENTATIONS.
 func (button *Button) EraseButtonSpecial() {
 	button.Special = Special{}
 	button.Fulfilled = false

@@ -20,6 +20,8 @@ type Special struct {
 	Name       string
 	Multiplier uint8 // used only for healing. Other type of special have fixed value.
 	// Charges    uint8 // TODO: Think about adding Charges attributes as some buffs have fixed charges values. Each charge lasts for one round.
+	// Order    uint8 // TODO: Think about adding Order attributes. Each special has a priority over others. Health -> Buffs -> ... -> Weapon
+	// TODO: If players try to use the same special (at same time) each got a number from 1 to 10 and the player with higher number get the special while other suffers damage and falls to the button next to it.
 }
 
 type Specials []Special
@@ -34,7 +36,6 @@ type Board struct {
 	Rows               []Row  // Bi-dimensional array of Buttons. In a grid of 5x20, ButtonRows attribute would be equivalent to [5][20]Buttons.
 }
 
-
 // _____ PLAYERS _____
 
 // TODO: Decide future of Dummies
@@ -48,10 +49,24 @@ type Player struct {
 	Rank uint8
 }
 
+type Players []Player // Supposed to be used for a specific game, players will leave PlayerList to form a Players group to join game.
+
+type PlayerList []Player // Supposed to have all the players available to play a game. 
+
+
+type Group struct {
+	ID      string
+	Players Players
+}
+
+// type Groups struct {
+// 	Groups []Group
+// }
 
 // _____ GAMES _____
 
 type Game struct {
+	ID    string
 	Board Board
-	Players []Player
+	Group Group
 }
