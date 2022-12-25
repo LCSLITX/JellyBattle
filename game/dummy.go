@@ -1,4 +1,4 @@
-package players
+package game
 
 // TODO: Decide future of Dummies
 

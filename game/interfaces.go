@@ -1,4 +1,4 @@
-package models
+package game
 
 // _____ BOARDS _____
 
@@ -34,17 +34,15 @@ type IButton interface {
 
 
 
-
 // _____ PLAYERS _____
 
 // TODO: Implementation of players package. Need to decide Player and Dummy structures.
 type IPLayer interface {
-	// 
+	// CreateGame lets players create a game TODO: Maybe FindGame makes more sense
 	CreateGame() Game
 }
 
 type IDummy interface {}
-
 
 
 

@@ -1,4 +1,4 @@
-package models
+package game
 
 // _____ BOARDS _____
 
