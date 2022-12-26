@@ -1,5 +1,7 @@
 package game
 
+import "time"
+
 // _____ BOARDS _____
 
 // Struct button refers to each button in the the board grid.
@@ -45,14 +47,18 @@ type Dummy struct {
 }
 
 type Player struct {
-	Name string
-	Rank uint8
+	Name         string
+	Rank         uint8
+	Life         uint8 // Not sure if its here
+	Experience   uint64
+	GamesPlayed  uint
+	JumpDistance uint8 // Not sure if its here
+	StartPosition uint8 // Not sure if its here
 }
 
 type Players []Player // Supposed to be used for a specific game, players will leave PlayerList to form a Players group to join game.
 
-type PlayerList []Player // Supposed to have all the players available to play a game. 
-
+type PlayerList []Player // Supposed to have all the players available to play a game.
 
 type Group struct {
 	ID      string
@@ -64,7 +70,10 @@ type Groups []Group
 // _____ GAMES _____
 
 type Game struct {
-	ID    string
-	Board Board
-	Group Group
+	ID       string
+	Board    Board
+	Group    Group
+	Started  bool // Not sure yet
+	Finished bool // Not sure yet
+	Timer    time.Duration
 }

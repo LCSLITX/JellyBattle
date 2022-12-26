@@ -75,8 +75,18 @@ func (playerList *PlayerList) GroupFourPlayers(groups *Groups) (Group, error) {
 		}
 
 		// TODO: Implement an assynchronous function to verify if ID already exists.
+	
+		
+		// TODO: Implement MUTEX
+		go func() {
+			for _, v := range g.Players {
+				playerList.RemovePlayer(v)
+			}
+		}()
 
-		groups.AddGroup(g)
+		go func() {
+			groups.AddGroup(g)
+		}()
 
 		if DebugModePlayerList() {
 			fmt.Printf("%v: %+v\n\n", Trace(), g)

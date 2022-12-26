@@ -55,7 +55,10 @@ type IPlayerList interface {
 // _____ GAMES _____
 
 type IGame interface {
-	// FindGame(Games) Game
+	// GetGames(Games) Game // Not sure yet
+	StartGame() bool
+	FinishGame() bool
+	GetWinners() Group // Could also return Players []Player. Will be ordered by index. 0 is winner, 3 is last
 }
 
 // _____ GROUPS _____

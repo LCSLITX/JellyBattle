@@ -2,6 +2,7 @@ package game
 
 import (
 	"fmt"
+	"time"
 )
 
 func NewGame(b Board, g Group) IGame {
@@ -18,6 +19,23 @@ func NewGame(b Board, g Group) IGame {
 	return game
 }
 
-func (game *Game) FindGame() Game {
-	return Game{}
+func (game *Game) StartGame() bool {
+	timer := time.NewTimer(5 * time.Minute)
+	game.Started = true
+
+	go func() {
+		<-timer.C
+		game.FinishGame()
+	}()
+
+	return game.Started
+}
+
+func (game *Game) FinishGame() bool {
+	game.Finished = true
+	return game.Finished
+}
+
+func (game *Game) GetWinners() Group {
+	return Group{}
 }

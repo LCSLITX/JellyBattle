@@ -53,6 +53,12 @@ func main() {
 	}
 
 	groups.GetGroups()
+	
+	playerList.GetPlayerList()
+
+	// groups.RemoveGroup(group)
+
+	// groups.GetGroups()
 
 	game.NewGame(board.GetBoard(), group)
 

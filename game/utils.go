@@ -60,7 +60,7 @@ func Trace() string {
 // TODO: Implement GenerateID
 // GenerateID creates a random ID
 func GenerateID() string {
-	return ""
+	return "999999"
 }
 
 // VerifyDuplicateID returns true if ID is already used.

@@ -38,7 +38,7 @@ func (groups *Groups) RemoveGroup(g Group) {
 	}
 }
 
-// FindGroup returns the index of a given player in the PlayerList. If not present returns -1.
+// FindGroup returns the index of a given group in the Groups. If not present returns -1.
 func (groups *Groups) FindGroup(g Group) (i int) {
 	i = -1
 	for k, v := range *groups {
