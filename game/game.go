@@ -2,8 +2,6 @@ package game
 
 import (
 	"fmt"
-
-	"github.com/lucassauro/J.B.Remake/game/utils"
 )
 
 func NewGame(b Board, g Group) IGame {
@@ -13,8 +11,8 @@ func NewGame(b Board, g Group) IGame {
 		Group: g,
 	}
 
-	if utils.DebugMode() {
-		fmt.Printf("%v: %+v\n\n", utils.Trace(), game)
+	if DebugModeGame() {
+		fmt.Printf("%v: %+v\n\n", Trace(), game)
 	}
 
 	return game

@@ -2,8 +2,6 @@ package game
 
 import (
 	"fmt"
-
-	"github.com/lucassauro/J.B.Remake/game/utils"
 )
 
 func NewPlayer(name string) IPLayer {
@@ -12,14 +10,18 @@ func NewPlayer(name string) IPLayer {
 		Rank: uint8(0),
 	}
 
-	if utils.DebugMode() {
-		fmt.Printf("%v: %+v\n\n", utils.Trace(), player)
+	if DebugModePlayer() {
+		fmt.Printf("%v: %+v\n\n", Trace(), player)
 	}
 
 	return player
 }
 
 func (player *Player) GetPlayer() Player {
+	if DebugModePlayer() {
+		fmt.Printf("%v: %+v\n\n", Trace(), *player)
+	}
+
 	return *player
 }
 
@@ -36,9 +38,9 @@ func (player *Player) GetPlayer() Player {
 
 // 	groups.Groups = append(groups.Groups, g)
 
-// 	if utils.DebugMode() {
-// 		fmt.Printf("%v: %+v\n\n", utils.Trace(), g)
+// 	if DebugMode() {
+// 		fmt.Printf("%v: %+v\n\n", Trace(), g)
 // 	}
 
-	// return g
+// return g
 // }

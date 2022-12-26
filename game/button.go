@@ -1,9 +1,5 @@
 package game
 
-import (
-	"github.com/lucassauro/J.B.Remake/game/utils"
-)
-
 // NewButton returns a Button instance.
 func NewButton(row, column uint8) (button Button) {
 	b := Button{
@@ -14,7 +10,7 @@ func NewButton(row, column uint8) (button Button) {
 
 // RandomizeButton uses probabilistic randomization to fulfill special buttons.
 func (button *Button) RandomizeButton() {
-	rand := utils.RandomNumber(ZERO_TO_NINETY_NINE) // 100 possible random numbers
+	rand := RandomNumber(ZERO_TO_NINETY_NINE) // 100 possible random numbers
 
 	if rand > DEFAULT_SPECIAL_FULFILLMENT {
 		button.Fulfilled = false

@@ -49,6 +49,7 @@ type IPlayerList interface {
 	AddPlayer(Player)
 	RemovePlayer(Player)
 	FindPlayer(p Player) (i int)
+	GroupFourPlayers(*Groups) (Group, error)
 }
 
 // _____ GAMES _____
@@ -59,7 +60,7 @@ type IGame interface {
 
 // _____ GROUPS _____
 
-// type IGroups interface {
-// 	GetGroups() Groups
-// 	AddGroup(Group)
-// }
+type IGroups interface {
+	GetGroups() Groups
+	AddGroup(Group)
+}

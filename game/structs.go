@@ -59,9 +59,7 @@ type Group struct {
 	Players Players
 }
 
-// type Groups struct {
-// 	Groups []Group
-// }
+type Groups []Group
 
 // _____ GAMES _____
 

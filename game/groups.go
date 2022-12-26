@@ -1,33 +1,51 @@
 package game
 
-// import (
-// 	"fmt"
+import (
+	"fmt"
+)
 
-// 	"github.com/lucassauro/J.B.Remake/game/utils"
-// )
+func NewGroups() IGroups {
+	g := &Groups{}
 
-// func NewGroups() IGroups {
-// 	g := &Groups{
-// 		Groups: []Group{},
-// 	}
+	if DebugModeGroups() {
+		fmt.Printf("%v: %+v\n\n", Trace(), g)
+	}
+	return g
+}
 
-// 	if utils.DebugMode() {
-// 		fmt.Printf("%v: %+v\n\n", utils.Trace(), g)
-// 	}
-// 	return g
-// }
+func (groups *Groups) GetGroups() Groups {
+	if DebugModeGroups() {
+		fmt.Printf("%v: %+v\n\n", Trace(), *groups)
+	}
+	return *groups
+}
 
-// func (groups *Groups) GetGroups() Groups {
-// 	if utils.DebugMode() {
-// 		fmt.Printf("%v: %+v\n\n", utils.Trace(), *groups)
-// 	}
-// 	return *groups
-// }
+func (groups *Groups) AddGroup(group Group) {
+	(*groups) = append(*groups, group)
 
-// func (groups *Groups) AddGroup(group Group) {
-// 	groups.Groups = append(groups.Groups, group)
-// }
+	if DebugModeGroups() {
+		fmt.Printf("%v: %+v\n\n", Trace(), *groups)
+	}
+}
 
-// // func (groups *Groups) RemoveGroup(Index) {
-// // 	groups.Groups = groups.Groups[1:]
-// // }
+func (groups *Groups) RemoveGroup(g Group) {
+	i := groups.FindGroup(g)
+	(*groups)[i] = (*groups)[len(*groups)-1]
+	(*groups) = (*groups)[:len(*groups)-1]
+
+	if DebugModeGroups() {
+		fmt.Printf("%v: %+v\n\n", Trace(), *groups)
+	}
+}
+
+// FindGroup returns the index of a given player in the PlayerList. If not present returns -1.
+func (groups *Groups) FindGroup(g Group) (i int) {
+	i = -1
+	for k, v := range *groups {
+		if v.ID == g.ID {
+			i = k
+			break
+		}
+	}
+	return
+}

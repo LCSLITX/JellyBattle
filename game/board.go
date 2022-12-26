@@ -2,8 +2,6 @@ package game
 
 import (
 	"fmt"
-
-	"github.com/lucassauro/J.B.Remake/game/utils"
 )
 
 // NewBoard returns a Board instance.
@@ -13,8 +11,8 @@ func NewBoard(rows, columns, players uint8) IBoard {
 	b.PlayersNumber = players
 	b.SpecialFulfillment = DEFAULT_SPECIAL_FULFILLMENT
 
-	if utils.DebugMode() {
-		fmt.Printf("%v: %+v\n\n", utils.Trace(), b)
+	if DebugModeBoard() {
+		fmt.Printf("%v: %+v\n\n", Trace(), b)
 	}
 
 	return b
@@ -22,8 +20,8 @@ func NewBoard(rows, columns, players uint8) IBoard {
 
 // GetBoard returns Board object.
 func (board *Board) GetBoard() Board {
-	if utils.DebugMode() {
-		fmt.Printf("%v: %+v\n\n", utils.Trace(), *board)
+	if DebugModeBoard() {
+		fmt.Printf("%v: %+v\n\n", Trace(), *board)
 	}
 	return *board
 }
@@ -45,8 +43,8 @@ func (board *Board) GenerateBoard(rows, columns uint8) {
 
 	board.NumberOfButtons = q
 
-	if utils.DebugMode() {
-		fmt.Printf("%v: %+v\n\n", utils.Trace(), board)
+	if DebugModeBoard() {
+		fmt.Printf("%v: %+v\n\n", Trace(), board)
 	}
 }
 
@@ -60,8 +58,8 @@ func (board *Board) RandomizeBoard() {
 		}
 	}
 
-	if utils.DebugMode() {
-		fmt.Printf("%v: %+v\n\n", utils.Trace(), board.Rows)
+	if DebugModeBoard() {
+		fmt.Printf("%v: %+v\n\n", Trace(), board.Rows)
 	}
 }
 
@@ -75,8 +73,8 @@ func (board *Board) GenerateRow() (row Row) {
 		row = append(row, b)                    // Add new button to created row of buttons
 	}
 
-	if utils.DebugMode() {
-		fmt.Printf("%v: %+v\n\n", utils.Trace(), row)
+	if DebugModeBoard() {
+		fmt.Printf("%v: %+v\n\n", Trace(), row)
 	}
 
 	return row
@@ -88,15 +86,15 @@ func (board *Board) RoundRows() {
 	board.Rows = board.Rows[1:]        // remove top element
 	board.Rows = append(board.Rows, r) // add last element
 
-	if utils.DebugMode() {
-		fmt.Printf("%v: %+v\n\n", utils.Trace(), board.Rows)
+	if DebugModeBoard() {
+		fmt.Printf("%v: %+v\n\n", Trace(), board.Rows)
 	}
 }
 
 // CountButtons return the quantity of buttons in the board grid.
 func (board *Board) countButtons() uint64 {
-	if utils.DebugMode() {
-		fmt.Printf("%v: %+v\n\n", utils.Trace(), board.NumberOfButtons)
+	if DebugModeBoard() {
+		fmt.Printf("%v: %+v\n\n", Trace(), board.NumberOfButtons)
 	}
 
 	return board.NumberOfButtons
@@ -114,8 +112,8 @@ func (board *Board) countEmptyButtons() uint64 {
 		}
 	}
 
-	if utils.DebugMode() {
-		fmt.Printf("%v: %+v\n\n", utils.Trace(), uint(q))
+	if DebugModeBoard() {
+		fmt.Printf("%v: %+v\n\n", Trace(), uint(q))
 	}
 
 	return uint64(q)
@@ -133,7 +131,7 @@ func (board *Board) UpdateBoard() {
 		}
 	}
 
-	if utils.DebugMode() {
-		fmt.Printf("%v: %+v\n\n", utils.Trace(), board.Rows)
+	if DebugModeBoard() {
+		fmt.Printf("%v: %+v\n\n", Trace(), board.Rows)
 	}
 }
