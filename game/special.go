@@ -27,26 +27,31 @@ func (s specialType) EnumIndex() int {
 type specialName uint8
 
 const (
-	Handbag specialName = iota
-	Blast
-	Laser
-	AirStrike
-	RandomDrop
-	Nuke
-	Invisible
-	DeBonus
-	Shield
-	Freeze
-	JellyRage
-	TripleJump
-	Teleport
-	Trap
-	Health
-	SuperJelly
+	Handbag specialName = iota // 0
+	Blast // 1
+	Laser // 2
+	AirStrike // 3
+	RandomDrop // 4
+	Nuke // 5
+	Invisible // 6
+	DeBonus // 7
+	Shield // 8 
+	Freeze // 9
+	JellyRage // 10
+	TripleJump // 11
+	Teleport // 12
+	Trap // 13
+	Health // 14
+	SuperJelly // 15
 )
 
 func (s specialName) String() string {
 	return [...]string{"Handbag", "Blast", "Laser", "Air Strike", "Random Drop", "Nuke", "Invisible", "De-Bonus", "Shield", "Freeze", "Jelly Rage", "Triple Jump", "Teleport", "Trap", "Health", "Super Jelly"}[s]
+}
+
+// TODO: Add descriptions. Theres three videos on youtube from which we can take original descriptions.
+func (s specialName) Description() string {
+	return [...]string{"", "", "", "", "", "", "", "", "", "", "", "", "", "", "Collect to restore your health", ""}[s]
 }
 
 func (s specialName) EnumIndex() int {
@@ -54,6 +59,7 @@ func (s specialName) EnumIndex() int {
 }
 
 var specials Specials = Specials{
+	// Weapon (Pink)
 	{ID: uint8(specialName(0).EnumIndex()), Type: specialType(0).String(), Name: specialName(0).String(), Multiplier: 1},
 	{ID: uint8(specialName(1).EnumIndex()), Type: specialType(0).String(), Name: specialName(1).String(), Multiplier: 1},
 	{ID: uint8(specialName(2).EnumIndex()), Type: specialType(0).String(), Name: specialName(2).String(), Multiplier: 1},
@@ -72,13 +78,13 @@ var specials Specials = Specials{
 	// Trap (Red)
 	{ID: uint8(specialName(13).EnumIndex()), Type: specialType(3).String(), Name: specialName(13).String(), Multiplier: 1},
 	// Healing (Green)
-	{ID: uint8(specialName(14).EnumIndex()), Type: specialType(4).String(), Name: specialName(14).String(), Multiplier: 1},
+	{ID: uint8(specialName(14).EnumIndex()), Type: specialType(4).String(), Name: specialName(14).String(), Multiplier: 1, Description: specialName(14).Description() },
 	{ID: uint8(specialName(15).EnumIndex()), Type: specialType(4).String(), Name: specialName(15).String(), Multiplier: 1},
 }
 
 // GenerateSpell returns a spell
 func GenerateSpecial() Special {
-	rand := RandomNumber(ZERO_TO_FIFTEEN) // 5 possible random numbers
+	rand := RandomNumber(ZERO_TO_FIFTEEN) // 16 possible random numbers
 	s := specials[specialName(rand).EnumIndex()]
 	if DebugModeSpecial() {
 		fmt.Printf("%v: %+v\n\n", Trace(), s)

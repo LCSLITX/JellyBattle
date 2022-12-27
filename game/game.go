@@ -19,8 +19,9 @@ func NewGame(b Board, g Group) IGame {
 	return game
 }
 
+// TODO: StartGame wont be used as games do not have time limit, apparently. But rounds does. it'll be useful there.
 func (game *Game) StartGame() bool {
-	timer := time.NewTimer(5 * time.Minute)
+	timer := time.NewTimer(10 * time.Second)
 	game.Started = true
 
 	go func() {

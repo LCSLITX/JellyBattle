@@ -3,7 +3,7 @@ package game
 const (
 	DEFAULT_PLAYERS_NUMBER uint8 = 4
 	DEFAULT_ROWS           uint8 = 5
-	DEFAULT_COLUMNS        uint8 = 20
+	DEFAULT_COLUMNS        uint8 = 15
 
 	DEFAULT_SPECIAL_FULFILLMENT uint8 = 70
 

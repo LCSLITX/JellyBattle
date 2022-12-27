@@ -2,6 +2,7 @@ package game
 
 import (
 	"fmt"
+	"reflect"
 )
 
 func NewPlayerList() IPlayerList {
@@ -50,7 +51,7 @@ func (playerList *PlayerList) RemovePlayer(p Player) {
 func (playerList *PlayerList) FindPlayer(p Player) (i int) {
 	i = -1
 	for k, v := range *playerList {
-		if v == p {
+		if reflect.DeepEqual(v, p) { // attention: it may have a bug if a player is passed with different buff. So mind where you take players from.
 			i = k
 			break
 		}

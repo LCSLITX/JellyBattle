@@ -17,14 +17,22 @@ type Row []Button
 
 // Struct Special refers to powers that goes in each button that is not empty.
 type Special struct {
-	ID         uint8
-	Type       string // Weapon (Pink), Buff (Blue), Utility (Yellow), Trap (Red), Healing (Green) or Empty(No color).
-	Name       string
-	Multiplier uint8 // used only for healing. Other type of special have fixed value.
-	// Charges    uint8 // TODO: Think about adding Charges attributes as some buffs have fixed charges values. Each charge lasts for one round.
+	ID          uint8
+	Type        string // Weapon (Pink), Buff (Blue), Utility (Yellow), Trap (Red), Healing (Green) or Empty(No color).
+	Name        string
+	Multiplier  uint8  // used only for healing. Other type of special have fixed value.
+	Description string // TODO: Add descriptions. Theres three videos on youtube from which we can take original descriptions.
+	Charges     uint8  // TODO: Think about adding Charges attributes as some buffs have fixed charges values. Each charge lasts for one round.
 	// Order    uint8 // TODO: Think about adding Order attributes. Each special has a priority over others. Health -> Buffs -> ... -> Weapon
 	// TODO: If players try to use the same special (at same time) each got a number from 1 to 10 and the player with higher number get the special while other suffers damage and falls to the button next to it.
 }
+
+type SpecialCharge struct {
+	Special string
+	Charges uint8
+}
+
+type SpecialCharges []SpecialCharge
 
 type Specials []Special
 
@@ -35,7 +43,8 @@ type Board struct {
 	NumberOfButtons    uint64 // Quantity of buttons in the grid.
 	PlayersNumber      uint8  // Quantity of players.
 	SpecialFulfillment uint8  // Percentage of Empty spaces.
-	Rows               []Row  // Bi-dimensional array of Buttons. In a grid of 5x20, ButtonRows attribute would be equivalent to [5][20]Buttons.
+	PreviewRow         Row
+	Rows               []Row // Bi-dimensional array of Buttons. In a grid of 5x20, ButtonRows attribute would be equivalent to [5][20]Buttons.
 }
 
 // _____ PLAYERS _____
@@ -52,8 +61,14 @@ type Player struct {
 	Life         uint8 // Not sure if its here
 	Experience   uint64
 	GamesPlayed  uint
-	JumpDistance uint8 // Not sure if its here
-	StartPosition uint8 // Not sure if its here
+	JumpDistance uint8    // Not sure if its here
+	Position     Position // Not sure if its here
+	Buffs        SpecialCharges
+}
+
+type Position struct {
+	Row    uint8 // x
+	Column uint8 // y
 }
 
 type Players []Player // Supposed to be used for a specific game, players will leave PlayerList to form a Players group to join game.

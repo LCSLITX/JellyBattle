@@ -25,22 +25,35 @@ func (player *Player) GetPlayer() Player {
 	return *player
 }
 
-// func (player *Player) FindGroup(groups *Groups) Group {
-// 	players := Players{
-// 		{Name: player.Name, Rank: player.Rank},
-// 	}
-// 	// TODO: Implement the logic to find more players probably will use go routines with timeouts
+func (player *Player) GetJumpDistance()  {
+	player.JumpDistance = 2
+	for _, v := range player.Buffs {
+		if v.Special == specialName.String(11) {
+			player.JumpDistance = 3
+		}
+	}
+	if DebugModePlayer() {
+		fmt.Printf("%v: %+v\n\n", Trace(), player.JumpDistance)
+	}
+}
 
-// 	g := Group{
-// 		ID:      "0",
-// 		Players: players,
-// 	}
+// TODO: Think about how its gonna work. Return a matrice maybe, or just return 4 limits.
+func (player *Player) GetJumpArea() {
+	// jd := player.JumpDistance
+	// row, column := player.Position.Row, player.Position.Column
 
-// 	groups.Groups = append(groups.Groups, g)
+	// limit1 := row + jd
+	// limit2 := row - jd
+	// limit3 := column + jd
+	// limit4 := column - jd
+}
 
-// 	if DebugMode() {
-// 		fmt.Printf("%v: %+v\n\n", Trace(), g)
-// 	}
+func (player *Player) Jump(p Position) {
+	if DebugModePlayer() {
+		fmt.Printf("%v: %+v\n\n", Trace(), *player)
+	}
 
-// return g
-// }
+	player.Position.Row, player.Position.Column = p.Row, p.Column
+
+}
+

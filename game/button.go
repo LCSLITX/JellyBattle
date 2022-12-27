@@ -8,7 +8,7 @@ func NewButton(row, column uint8) (button Button) {
 	return b
 }
 
-// RandomizeButton uses probabilistic randomization to fulfill special buttons.
+// RandomizeButton uses probabilistic randomization to fulfill buttons with specials or to leave it empty.
 func (button *Button) RandomizeButton() {
 	rand := RandomNumber(ZERO_TO_NINETY_NINE) // 100 possible random numbers
 

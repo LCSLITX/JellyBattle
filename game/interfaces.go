@@ -2,20 +2,27 @@ package game
 
 // _____ BOARDS _____
 
+
+// Players can jump 2 tiles to any direction. unless he has triple jump then its 3 tiles.
+// Players start at row index 1.
+// Special start at row index 3.
+// Preview row is row index 5.
 type IBoard interface {
 	// GetBoard returns the board
 	GetBoard() Board
 	// GenerateBoard creates a board with specified number of rows and columns
 	GenerateBoard(rows, columns uint8)
+
+	// both useless after refactoring
 	// RandomizeBoard populates a board with buttons
-	RandomizeBoard()
+	// RandomizeBoard()
 	// UpdateBoard updates the board buttons
-	UpdateBoard()
+	// UpdateBoard()
 
 	// RoundRows rotates the board rows every round.
 	RoundRows()
-	// GenerateRow generate one row at once
-	GenerateRow() Row
+	// GeneratePreviewRow generate one row at once
+	GeneratePreviewRow()
 
 	// CountButtons return the quantity of buttons in the grid.
 	countButtons() uint64
@@ -40,6 +47,13 @@ type IButton interface {
 type IPLayer interface {
 	// GetPlayer return a player.
 	GetPlayer() Player
+	GetJumpDistance()
+	GetJumpArea()
+	Jump(Position)
+	// UseButton()
+	// TakeDamage()
+	// DoDamage()
+	// ReplenishLife()
 }
 
 type IDummy interface{}

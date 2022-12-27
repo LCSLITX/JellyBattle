@@ -4,16 +4,14 @@ import (
 	"fmt"
 )
 
-// NewBoard returns a Board instance.
+// https://stackoverflow.com/questions/28800672/how-to-add-new-methods-to-an-existing-type-in-go
+
+// NewBoard returns an empty Board instance.
 func NewBoard(rows, columns, players uint8) IBoard {
 	b := &Board{}
 	b.GenerateBoard(rows, columns)
 	b.PlayersNumber = players
 	b.SpecialFulfillment = DEFAULT_SPECIAL_FULFILLMENT
-
-	if DebugModeBoard() {
-		fmt.Printf("%v: %+v\n\n", Trace(), b)
-	}
 
 	return b
 }
@@ -48,24 +46,27 @@ func (board *Board) GenerateBoard(rows, columns uint8) {
 	}
 }
 
+// Currently useless as board will start almost empty.
 // RandomizeBoard Randomizes all the buttons of the board.
-func (board *Board) RandomizeBoard() {
-	rows, columns := board.RowNumber, board.ColumnNumber
+// func (board *Board) RandomizeBoard() {
+// 	rows, columns := board.RowNumber, board.ColumnNumber
 
-	for r := uint8(0); r < rows; r++ {
-		for c := uint8(0); c < columns; c++ {
-			board.Rows[r][c].RandomizeButton()
-		}
-	}
+// 	for r := uint8(0); r < rows; r++ {
+// 		for c := uint8(0); c < columns; c++ {
+// 			board.Rows[r][c].RandomizeButton()
+// 		}
+// 	}
 
-	if DebugModeBoard() {
-		fmt.Printf("%v: %+v\n\n", Trace(), board.Rows)
-	}
-}
+// 	if DebugModeBoard() {
+// 		fmt.Printf("%v: %+v\n\n", Trace(), board.Rows)
+// 	}
+// }
 
 // GenerateRow() generates one row at once.
-func (board *Board) GenerateRow() (row Row) {
+func (board *Board) GeneratePreviewRow() {
 	rowsLength, columns := uint8(len(board.Rows)), board.ColumnNumber
+
+	var row Row
 
 	for c := uint8(0); c < columns; c++ {
 		b := Button{Row: rowsLength, Column: c} // Create an empty button
@@ -77,14 +78,20 @@ func (board *Board) GenerateRow() (row Row) {
 		fmt.Printf("%v: %+v\n\n", Trace(), row)
 	}
 
-	return row
+	board.PreviewRow = row
 }
 
-// RoundRows rotates the board rows every round.
+// RoundRows rotates the board rows and updates the buttons to correspond correctly to its respective Rows and columns, supposed to be used when changing rounds.
 func (board *Board) RoundRows() {
-	r := board.GenerateRow()
-	board.Rows = board.Rows[1:]        // remove top element
-	board.Rows = append(board.Rows, r) // add last element
+	board.Rows = board.Rows[1:]                       // remove top element index[1]
+	board.Rows = append(board.Rows, board.PreviewRow) // add last element index[length - 1]
+
+	rows, columns := board.RowNumber, board.ColumnNumber
+	for r := uint8(0); r < rows; r++ {
+		for c := uint8(0); c < columns; c++ {
+			board.Rows[r][c].UpdateButton(r, c)
+		}
+	}
 
 	if DebugModeBoard() {
 		fmt.Printf("%v: %+v\n\n", Trace(), board.Rows)
@@ -119,19 +126,19 @@ func (board *Board) countEmptyButtons() uint64 {
 	return uint64(q)
 }
 
-// UpdateBoard updates all the buttons of the board by calling updateButton method.
-func (board *Board) UpdateBoard() {
-	// VALIDATE this
-	// DONE: Buttons attributes (Rows and Columns) are currently keeping original data. Need to decide if it needs to update Row number x to x+1, for example.
-	rows, columns := board.RowNumber, board.ColumnNumber
+// // UpdateBoard updates all the buttons of the board by calling updateButton method.
+// func (board *Board) UpdateBoard() {
+// 	// VALIDATE this
+// 	// DONE: Buttons attributes (Rows and Columns) are currently keeping original data. Need to decide if it needs to update Row number x to x+1, for example.
+// 	rows, columns := board.RowNumber, board.ColumnNumber
 
-	for r := uint8(0); r < rows; r++ {
-		for c := uint8(0); c < columns; c++ {
-			board.Rows[r][c].UpdateButton(r, c)
-		}
-	}
+// 	for r := uint8(0); r < rows; r++ {
+// 		for c := uint8(0); c < columns; c++ {
+// 			board.Rows[r][c].UpdateButton(r, c)
+// 		}
+// 	}
 
-	if DebugModeBoard() {
-		fmt.Printf("%v: %+v\n\n", Trace(), board.Rows)
-	}
-}
+// 	if DebugModeBoard() {
+// 		fmt.Printf("%v: %+v\n\n", Trace(), board.Rows)
+// 	}
+// }
