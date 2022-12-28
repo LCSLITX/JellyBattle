@@ -27,31 +27,53 @@ func (s specialType) EnumIndex() int {
 type specialName uint8
 
 const (
+	// Weapon
 	Handbag specialName = iota // 0
 	Blast // 1
 	Laser // 2
 	AirStrike // 3
 	RandomDrop // 4
 	Nuke // 5
+	// Buffs
 	Invisible // 6
 	DeBonus // 7
-	Shield // 8 
+	Shield // 8
 	Freeze // 9
 	JellyRage // 10
 	TripleJump // 11
+	// Utility
 	Teleport // 12
-	Trap // 13
+	// Trap
+	Mine // 13
+	// Health
 	Health // 14
 	SuperJelly // 15
 )
 
 func (s specialName) String() string {
-	return [...]string{"Handbag", "Blast", "Laser", "Air Strike", "Random Drop", "Nuke", "Invisible", "De-Bonus", "Shield", "Freeze", "Jelly Rage", "Triple Jump", "Teleport", "Trap", "Health", "Super Jelly"}[s]
+	return [...]string{"Handbag", "Blast", "Laser", "Air Strike", "Random Drop", "Nuke", "Invisible", "De-Bonus", "Shield", "Freeze", "Jelly Rage", "Triple Jump", "Teleport", "Mine", "Health", "Super Jelly"}[s]
 }
 
 // TODO: Add descriptions. Theres three videos on youtube from which we can take original descriptions.
 func (s specialName) Description() string {
-	return [...]string{"", "", "", "", "", "", "", "", "", "", "", "", "", "", "Collect to restore your health", ""}[s]
+	return [...]string{
+		"Collect to injure an opponent within one square", // 0
+		"Activate a blast that injures opponents within three squares", // 1 
+		"Injure opponents with a vertical and horizontal laser", // 2
+		"Need help? Call in an air strike", // 3
+		"Collect to drop a random object on an opponent", // 4
+		"Injure all opponents with the ultimate bomb", // 5
+		"Become invisible and gain a strategic advantage", // 6
+		"Disarm your opponents' bonuses", // 7
+		"The ultimate protection", // 8
+		"Freeze an opponent in their current position", // 9
+		"Cause double damage to opponents' health", // 10
+		"Collect to move three spaces in any direction", // 11
+		"Escape imminent danger by transporting yourself across the keyboard", // 12
+		"Avoid mines to keep your health", // 13
+		"Collect to restore your health", // 14
+		"Collect to restore your health to 100%", // 15
+		}[s]
 }
 
 func (s specialName) EnumIndex() int {

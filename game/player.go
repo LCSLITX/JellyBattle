@@ -28,7 +28,7 @@ func (player *Player) GetPlayer() Player {
 func (player *Player) GetJumpDistance()  {
 	player.JumpDistance = 2
 	for _, v := range player.Buffs {
-		if v.Special == specialName.String(11) {
+		if v.SpecialName == specialName.String(11) {
 			player.JumpDistance = 3
 		}
 	}
@@ -38,22 +38,43 @@ func (player *Player) GetJumpDistance()  {
 }
 
 // TODO: Think about how its gonna work. Return a matrice maybe, or just return 4 limits.
+// The horizontal order of buttons (rows) is inverse to the cartesian plane.
 func (player *Player) GetJumpArea() {
 	// jd := player.JumpDistance
 	// row, column := player.Position.Row, player.Position.Column
 
-	// limit1 := row + jd
-	// limit2 := row - jd
-	// limit3 := column + jd
-	// limit4 := column - jd
+	// superiorRowLimit := row - jd
+	// inferiorRowLimit := row + jd
+	// leftColumnLimit := column - jd
+	// rightColumnLimit := column + jd
 }
 
-func (player *Player) Jump(p Position) {
+// JumpTo Position is the function that changes player button.
+func (player *Player) JumpTo() {
+	player.Position.Row, player.Position.Column = player.JumpPosition.Row, player.JumpPosition.Column
+
 	if DebugModePlayer() {
 		fmt.Printf("%v: %+v\n\n", Trace(), *player)
 	}
-
-	player.Position.Row, player.Position.Column = p.Row, p.Column
-
 }
 
+// NextJump Position is the function that receives the position of nextjump.
+func (player *Player) NextJump(p Position) {
+	player.JumpPosition.Row, player.JumpPosition.Column = p.Row, p.Column
+	
+	if DebugModePlayer() {
+		fmt.Printf("%v: %+v\n\n", Trace(), *player)
+	}
+}
+
+func (player *Player) TakeDamage(s Special) {
+	if s.Type == "Weapon" {
+		player.Life -= s.Damage
+	} else if s.Type == "Healing" {
+		player.Life += s.Damage
+	}
+}
+
+func (player *Player) DoDamage(s Special, p Players) {
+
+}

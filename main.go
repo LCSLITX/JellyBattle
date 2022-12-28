@@ -1,13 +1,15 @@
 package main
 
 import (
+	"fmt"
 	"os"
+	"time"
 
 	"github.com/lucassauro/JellyBattle/game"
 )
 
 func main() {
-	os.Setenv("DEBUG_MODE_BOARD", "true")
+	// os.Setenv("DEBUG_MODE_BOARD", "true")
 	os.Setenv("DEBUG_MODE_GROUPS", "true")
 	os.Setenv("DEBUG_MODE_GAME", "true")
 	os.Setenv("DEBUG_MODE_PLAYER", "true")
@@ -18,49 +20,133 @@ func main() {
 	columns := game.DEFAULT_COLUMNS
 	players := game.DEFAULT_PLAYERS_NUMBER
 
+	pL := game.NewPlayerList()
+	gs := game.NewGroups()
+
+	p1 := game.NewPlayer("Lucas")
+	pL.AddPlayer(p1.GetPlayer())
+	
+	p2 := game.NewPlayer("P2")
+	pL.AddPlayer(p2.GetPlayer())
+	
+	p3 := game.NewPlayer("P3")
+	pL.AddPlayer(p3.GetPlayer())
+	
+	p4 := game.NewPlayer("P4")
+	pL.AddPlayer(p4.GetPlayer())
+	
+	_, err := pL.GroupFourPlayers(gs.GetGroups())
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+	gs.GetGroups()
+
 	board := game.NewBoard(rows, columns, players)
-
-	// p1 := game.NewPlayer("Lucas")
-	// p2 := game.NewPlayer("P2")
-	// p3 := game.NewPlayer("P3")
-	// p4 := game.NewPlayer("P4")
-
-	board.GeneratePreviewRow()
-
-	board.RoundRows()
-
+	
 	// board.GeneratePreviewRow()
-
 	// board.RoundRows()
+	
+	// board.GeneratePreviewRow()
+	
+	// board.RoundRows()
+	g, err := game.NewGame(board.GetBoard(), gs.GetFirstGroup())
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+
+	g.StartGame()
+
+	time.Sleep(2 * time.Second)
+
+	gm := g.GetGame()
+
+	gm.Group.Players[0].NextJump(game.Position{
+		Row: 2,
+		Column: gm.Group.Players[0].Position.Column,
+	})
+
+	gm.Group.Players[1].NextJump(game.Position{
+		Row: 2,
+		Column: gm.Group.Players[1].Position.Column,
+	})
+
+	gm.Group.Players[2].NextJump(game.Position{
+		Row: 2,
+		Column: gm.Group.Players[2].Position.Column,
+	})
+
+	gm.Group.Players[3].NextJump(game.Position{
+		Row: 2,
+		Column: gm.Group.Players[3].Position.Column,
+	})
+
+	time.Sleep(4 * time.Second)
+
+	gm.Group.Players[0].NextJump(game.Position{
+		Row: 3,
+		Column: gm.Group.Players[0].Position.Column,
+	})
+
+	gm.Group.Players[1].NextJump(game.Position{
+		Row: 3,
+		Column: gm.Group.Players[1].Position.Column,
+	})
+
+	gm.Group.Players[2].NextJump(game.Position{
+		Row: 3,
+		Column: gm.Group.Players[2].Position.Column,
+	})
+
+	gm.Group.Players[3].NextJump(game.Position{
+		Row: 3,
+		Column: gm.Group.Players[3].Position.Column,
+	})
+
+	time.Sleep(5 * time.Second)
+
+	gm.Group.Players[0].NextJump(game.Position{
+		Row: 4,
+		Column: gm.Group.Players[0].Position.Column,
+	})
+
+	gm.Group.Players[1].NextJump(game.Position{
+		Row: 4,
+		Column: gm.Group.Players[1].Position.Column,
+	})
+
+	gm.Group.Players[2].NextJump(game.Position{
+		Row: 4,
+		Column: gm.Group.Players[2].Position.Column,
+	})
+
+	gm.Group.Players[3].NextJump(game.Position{
+		Row: 4,
+		Column: gm.Group.Players[3].Position.Column,
+	})
+
+	time.Sleep(10 * time.Second)
+
+	// p1.NextJump(game.Position{
+	// 	Row: 3,
+	// 	Column: p1.GetPlayer().Position.Column,
+	// })
+
+	// p2.NextJump(game.Position{
+	// 	Row: 3,
+	// 	Column: p2.GetPlayer().Position.Column,
+	// })
+
+	// p3.NextJump(game.Position{
+	// 	Row: 3,
+	// 	Column: p3.GetPlayer().Position.Column,
+	// })
+
+	// p4.NextJump(game.Position{
+	// 	Row: 3,
+	// 	Column: p4.GetPlayer().Position.Column,
+	// })
+
+	g.FinishGame()
 }
-
-// playerList.FindPlayer(game.NewPlayer("B").GetPlayer()) // -1
-// playerList.FindPlayer(p1.GetPlayer())                  // 0
-// playerList.GetPlayerList()
-
-// TODO: Create Makefile
-// TODO: Create unit and integration tests
-
-// playerList := game.NewPlayerList()
-// playerList.AddPlayer(p1.GetPlayer())
-// playerList.GetPlayerList()
-// playerList.AddPlayer(p2.GetPlayer())
-// playerList.GetPlayerList()
-// playerList.AddPlayer(p3.GetPlayer())
-// playerList.GetPlayerList()
-// playerList.AddPlayer(p4.GetPlayer())
-// playerList.GetPlayerList()
-
-// groups := game.NewGroups().GetGroups()
-
-// group, err := playerList.GroupFourPlayers(&groups)
-// if err != nil {
-// 	fmt.Println(err)
-// 	os.Exit(1)
-// }
-
-// groups.GetGroups()
-
-// playerList.GetPlayerList()
-
-// game.NewGame(board.GetBoard(), group)

@@ -13,15 +13,15 @@ func NewGroups() IGroups {
 	return g
 }
 
-func (groups *Groups) GetGroups() Groups {
+func (groups *Groups) GetGroups() *Groups {
 	if DebugModeGroups() {
-		fmt.Printf("%v: %+v\n\n", Trace(), *groups)
+		fmt.Printf("%v: %+v\n\n", Trace(), groups)
 	}
-	return *groups
+	return groups
 }
 
 func (groups *Groups) AddGroup(group Group) {
-	(*groups) = append(*groups, group)
+	*groups = append(*groups, group)
 
 	if DebugModeGroups() {
 		fmt.Printf("%v: %+v\n\n", Trace(), *groups)
@@ -48,4 +48,11 @@ func (groups *Groups) FindGroup(g Group) (i int) {
 		}
 	}
 	return
+}
+
+func (groups *Groups) GetFirstGroup() Group {
+	if len(*groups) == 0 {
+		return Group{}
+	}
+	return (*groups)[0]
 }

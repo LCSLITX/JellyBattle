@@ -28,7 +28,6 @@ func (board *Board) GetBoard() Board {
 func (board *Board) GenerateBoard(rows, columns uint8) {
 	board.RowNumber, board.ColumnNumber = rows, columns
 	q := uint64(0)
-
 	for r := uint8(0); r < rows; r++ {
 		row := Row{} // Create an empty row of buttons
 		for c := uint8(0); c < columns; c++ {
@@ -38,46 +37,24 @@ func (board *Board) GenerateBoard(rows, columns uint8) {
 		}
 		board.Rows = append(board.Rows, row) // Add new row of buttons into Rows array.
 	}
-
 	board.NumberOfButtons = q
-
 	if DebugModeBoard() {
 		fmt.Printf("%v: %+v\n\n", Trace(), board)
 	}
 }
 
-// Currently useless as board will start almost empty.
-// RandomizeBoard Randomizes all the buttons of the board.
-// func (board *Board) RandomizeBoard() {
-// 	rows, columns := board.RowNumber, board.ColumnNumber
-
-// 	for r := uint8(0); r < rows; r++ {
-// 		for c := uint8(0); c < columns; c++ {
-// 			board.Rows[r][c].RandomizeButton()
-// 		}
-// 	}
-
-// 	if DebugModeBoard() {
-// 		fmt.Printf("%v: %+v\n\n", Trace(), board.Rows)
-// 	}
-// }
-
-// GenerateRow() generates one row at once.
+// GeneratePreviewRow() generates one row at once.
 func (board *Board) GeneratePreviewRow() {
 	rowsLength, columns := uint8(len(board.Rows)), board.ColumnNumber
-
 	var row Row
-
 	for c := uint8(0); c < columns; c++ {
 		b := Button{Row: rowsLength, Column: c} // Create an empty button
 		b.RandomizeButton()                     // Randomize it
 		row = append(row, b)                    // Add new button to created row of buttons
 	}
-
 	if DebugModeBoard() {
 		fmt.Printf("%v: %+v\n\n", Trace(), row)
 	}
-
 	board.PreviewRow = row
 }
 
@@ -92,7 +69,6 @@ func (board *Board) RoundRows() {
 			board.Rows[r][c].UpdateButton(r, c)
 		}
 	}
-
 	if DebugModeBoard() {
 		fmt.Printf("%v: %+v\n\n", Trace(), board.Rows)
 	}
@@ -103,7 +79,6 @@ func (board *Board) countButtons() uint64 {
 	if DebugModeBoard() {
 		fmt.Printf("%v: %+v\n\n", Trace(), board.NumberOfButtons)
 	}
-
 	return board.NumberOfButtons
 }
 
@@ -118,27 +93,20 @@ func (board *Board) countEmptyButtons() uint64 {
 			}
 		}
 	}
-
 	if DebugModeBoard() {
 		fmt.Printf("%v: %+v\n\n", Trace(), uint(q))
 	}
-
 	return uint64(q)
 }
 
-// // UpdateBoard updates all the buttons of the board by calling updateButton method.
-// func (board *Board) UpdateBoard() {
-// 	// VALIDATE this
-// 	// DONE: Buttons attributes (Rows and Columns) are currently keeping original data. Need to decide if it needs to update Row number x to x+1, for example.
-// 	rows, columns := board.RowNumber, board.ColumnNumber
+// TODO: Make it return dinamically depending on the quantity of players and number of columns
+func (board *Board) GetStartPosition() {
+	row := uint8(1)
 
-// 	for r := uint8(0); r < rows; r++ {
-// 		for c := uint8(0); c < columns; c++ {
-// 			board.Rows[r][c].UpdateButton(r, c)
-// 		}
-// 	}
-
-// 	if DebugModeBoard() {
-// 		fmt.Printf("%v: %+v\n\n", Trace(), board.Rows)
-// 	}
-// }
+	board.StartPositions = Positions{
+		{Row: row, Column: 1},
+		{Row: row, Column: 5},
+		{Row: row, Column: 9},
+		{Row: row, Column: 13},
+	}
+}

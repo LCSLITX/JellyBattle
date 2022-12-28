@@ -38,6 +38,10 @@ func (playerList *PlayerList) AddPlayer(p Player) {
 // https://stackoverflow.com/questions/37334119/how-to-delete-an-element-from-a-slice-in-golang
 // https://stackoverflow.com/questions/38013922/slicing-a-slice-pointer-passed-as-argument
 func (playerList *PlayerList) RemovePlayer(p Player) {
+	if len(playerList.GetPlayerList()) == 0 {
+		return
+	}
+
 	i := playerList.FindPlayer(p)
 	(*playerList)[i] = (*playerList)[len(*playerList)-1]
 	(*playerList) = (*playerList)[:len(*playerList)-1]
@@ -76,22 +80,15 @@ func (playerList *PlayerList) GroupFourPlayers(groups *Groups) (Group, error) {
 		}
 
 		// TODO: Implement an assynchronous function to verify if ID already exists.
-	
-		
+			
 		// TODO: Implement MUTEX
 		go func() {
 			for _, v := range g.Players {
 				playerList.RemovePlayer(v)
 			}
 		}()
-
-		go func() {
-			groups.AddGroup(g)
-		}()
-
-		if DebugModePlayerList() {
-			fmt.Printf("%v: %+v\n\n", Trace(), g)
-		}
+		
+		groups.AddGroup(g)
 
 		return g, nil
 	}
