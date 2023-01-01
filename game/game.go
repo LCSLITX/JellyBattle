@@ -5,15 +5,19 @@ import (
 	"time"
 )
 
-func NewGame(b Board, g Group) (IGame, error) {
-	if len(g.Players) == 0 {
-		return nil, fmt.Errorf("Cannot use an empty group")
+func NewGame(g *Groups) (IGame, error) {
+	if len(*g) == 0 {
+		return nil, fmt.Errorf("There's no group to create a game.")
+	} else if len((*g)[0].Players) == 0 {
+		return nil, fmt.Errorf("Cannot use an empty group.")
 	}
 
+	b := NewBoard(DEFAULT_ROWS, DEFAULT_COLUMNS, DEFAULT_PLAYERS_NUMBER).GetBoard()
+
 	game := &Game{
-		ID:    g.ID, // TODO: Function to Generate ID. Think about game ID and Group ID
+		ID:    (*g)[0].ID, // TODO: Function to Generate ID. Think about game ID and Group ID
 		Board: b,
-		Group: g,
+		Group: (*g)[0],
 	}
 
 	if DebugModeGame() {
@@ -41,7 +45,7 @@ func (game *Game) StartGame() bool {
 	go func() {
 		for {
 			select {
-			case <-game.Finish:
+			case <-Finish:
 				game.FinishGame()
 				ticker.Stop()
 			case <-timer.C:
@@ -79,8 +83,8 @@ func (game *Game) GetWinners() Group {
 func (game *Game) Dead(p Player) {
 	// TODO: Create Logic to rank players.
 	game.Deaths++
-	if game.Deaths == 4 {
-		game.Finish <- true
+	if game.Deaths == 3 {
+		Finish <- true
 	}
 }
 

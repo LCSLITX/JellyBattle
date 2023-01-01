@@ -59,6 +59,11 @@ type IGame interface {
 	StartGame() bool
 }
 
+type IGames interface {
+	AddGame(Game)
+	GetGames() Games
+}
+
 // _____ GROUPS _____
 
 type IGroups interface {

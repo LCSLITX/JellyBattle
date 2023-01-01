@@ -23,6 +23,8 @@ type Dummy struct { // TODO: Decide future of Dummies
 	Rank uint8
 }
 
+var Finish chan bool
+
 type Game struct { // Struct Game refers to a game, composed by a group of players and a board.
 	ID       string
 	Board    Board
@@ -31,8 +33,10 @@ type Game struct { // Struct Game refers to a game, composed by a group of playe
 	Finished bool // Not sure yet
 	// Timer    time.Duration // Not sure yet
 	Deaths uint8
-	Finish chan bool
 }
+
+type Games []Game
+
 type Group struct {
 	ID      string
 	Players Players
@@ -41,6 +45,7 @@ type Group struct {
 type Groups []Group
 
 type Player struct {
+	ID           string
 	Name         string
 	Rank         uint8
 	Life         uint8
