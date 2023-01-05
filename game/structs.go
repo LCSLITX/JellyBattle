@@ -23,7 +23,7 @@ type Dummy struct { // TODO: Decide future of Dummies
 	Rank uint8
 }
 
-var Finish chan bool
+var Finish chan bool // outside Game because its not compatible with enconding/json.NewDecoder().Decode().
 
 type Game struct { // Struct Game refers to a game, composed by a group of players and a board.
 	ID       string
@@ -31,8 +31,9 @@ type Game struct { // Struct Game refers to a game, composed by a group of playe
 	Group    Group
 	Started  bool // Not sure yet
 	Finished bool // Not sure yet
+	Deaths   uint8
+	Chat     [][]byte // Not sure yet
 	// Timer    time.Duration // Not sure yet
-	Deaths uint8
 }
 
 type Games []Game
@@ -76,8 +77,8 @@ type Special struct { // Struct Special refers to powers that goes in each butto
 	Name        string
 	Multiplier  uint8 // used only for healing. Other type of special have fixed value.
 	Damage      uint8
-	Description string 
-	Charges     uint8  // TODO: Think about adding Charges attributes as some buffs have fixed charges values. Each charge lasts for one round.
+	Description string
+	Charges     uint8 // TODO: Think about adding Charges attributes as some buffs have fixed charges values. Each charge lasts for one round.
 	// Order    uint8 // TODO: Think about adding Order attributes. Each special has a priority over others. Utility -> Health -> Buffs -> ... -> Weapon
 	// TODO: If players try to use the same special (at same time) each got a number from 1 to 10 and the player with higher number get the special while other suffers damage and falls to the button next to it.
 }

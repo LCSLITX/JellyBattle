@@ -9,23 +9,33 @@ import (
 	"github.com/lucassauro/JellyBattle/game"
 )
 
+func init() {
+	os.Setenv("PORT", ":3333")
+}
+
 func Server() error {
+	// REST API
 	http.HandleFunc("/", GetRoot)
 	http.HandleFunc("/ping", GetPing)
-
+	// Player
 	http.HandleFunc("/player/create", CreatePlayer)
-
+	// PlayerList
 	http.HandleFunc("/playerlist", GetPlayerList)
-
+	// Games
 	http.HandleFunc("/games", GetGames)
 	http.HandleFunc("/games/getbyid", GetGameByID)
-
+	//Game
 	http.HandleFunc("/game/start", StartGame)
 
-	os.Setenv("PORT", ":3333")
 
+	// WEBSOCKET
+
+	
+	// Server
 	fmt.Printf("Server running on localhost%v...\n", PORT)
 
+
+	// TODO: Take this horrible thing out of here.
 	// This go routine checks if Playerlist has four players and then creates a game.
 	go func() {
 		for {

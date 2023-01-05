@@ -8,6 +8,7 @@ import (
 	"github.com/lucassauro/JellyBattle/game"
 )
 
+// CreatePlayer handler receives a JSON Body with an attribute name.
 func CreatePlayer(w http.ResponseWriter, r *http.Request) {
 	fmt.Printf("[%s] %s%s\n", r.Method, r.Host, r.URL)
 

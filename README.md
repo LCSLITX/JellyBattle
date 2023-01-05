@@ -1,4 +1,4 @@
-# J.B.Remake
+# JellyBattle
 Remake of a classical flash game called Jelly Battle.
 
 
@@ -14,7 +14,10 @@ Priorities:
   panic: runtime error: index out of range [-1]
   ```
 
-  -[ ] Chat works.
   -[ ] Use websocket when a game is started. It should transmit information to all players in that.
+  -[ ] Implement in-game chat.
   -[ ] Player can move only within its JumpDistance. Maybe it will be a proper limitation of front-end.
   -[ ] Game runs from start to end, with rounds counting up and players moving in each turn.
+  -[ ] Remove commentaries in main.go file. Those validations should've made with unit or integration tests.
+
+  -[ ] Think about using websocket for searching for a game. Player connects to a list of available players and gets removed if it disconnects. It is a possible better approach than the current one.

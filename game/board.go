@@ -4,10 +4,11 @@ import (
 	"fmt"
 )
 
-// https://stackoverflow.com/questions/28800672/how-to-add-new-methods-to-an-existing-type-in-go
 
 // NewBoard() constructor returns an empty Board instance.
 func NewBoard(rows, columns, players uint8) IBoard {
+	// To know more about Object Oriented Programming (OOP) in Go and how to add methods to a "class":
+	// https://stackoverflow.com/questions/28800672/how-to-add-new-methods-to-an-existing-type-in-go
 	b := &Board{}
 	b.GenerateBoard(rows, columns)
 	b.PlayersNumber = players
