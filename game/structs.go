@@ -76,7 +76,7 @@ type Special struct { // Struct Special refers to powers that goes in each butto
 	Name        string
 	Multiplier  uint8 // used only for healing. Other type of special have fixed value.
 	Damage      uint8
-	Description string // TODO: Add descriptions. Theres three videos on youtube from which we can take original descriptions.
+	Description string 
 	Charges     uint8  // TODO: Think about adding Charges attributes as some buffs have fixed charges values. Each charge lasts for one round.
 	// Order    uint8 // TODO: Think about adding Order attributes. Each special has a priority over others. Utility -> Health -> Buffs -> ... -> Weapon
 	// TODO: If players try to use the same special (at same time) each got a number from 1 to 10 and the player with higher number get the special while other suffers damage and falls to the button next to it.

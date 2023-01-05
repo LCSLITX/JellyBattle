@@ -2,6 +2,7 @@ package game
 
 import "fmt"
 
+// NewGames() constructor returns a games instance.
 func NewGames() (IGames) {
 	games := &Games{}
 
@@ -12,10 +13,12 @@ func NewGames() (IGames) {
 	return games
 }
 
+// AddGame() adds a game to games array instance.
 func (games *Games) AddGame(g Game) {
 	*games = append(*games, g)
 }
 
+// GetGames() returns games array.
 func (games *Games) GetGames() Games {
 	return *games
 }

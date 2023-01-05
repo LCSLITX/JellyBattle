@@ -28,7 +28,7 @@ type IButton interface {
 
 // TODO: Implementation of players package. Need to decide Player and Dummy structures.
 type IPLayer interface {
-	// DoDamage()
+	// CauseDamage()
 	GetPlayer() Player
 	GetJumpDistance()
 	GetJumpArea()

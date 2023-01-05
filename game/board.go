@@ -6,7 +6,7 @@ import (
 
 // https://stackoverflow.com/questions/28800672/how-to-add-new-methods-to-an-existing-type-in-go
 
-// NewBoard returns an empty Board instance.
+// NewBoard() constructor returns an empty Board instance.
 func NewBoard(rows, columns, players uint8) IBoard {
 	b := &Board{}
 	b.GenerateBoard(rows, columns)
@@ -16,7 +16,7 @@ func NewBoard(rows, columns, players uint8) IBoard {
 	return b
 }
 
-// GetBoard returns Board object.
+// GetBoard() returns Board object.
 func (board *Board) GetBoard() Board {
 	if DebugModeBoard() {
 		fmt.Printf("%v: %+v\n\n", Trace(), *board)
@@ -24,7 +24,7 @@ func (board *Board) GetBoard() Board {
 	return *board
 }
 
-// Generateboard generates a board with specified number of rows and columns
+// Generateboard() generates a board with specified number of rows and columns.
 func (board *Board) GenerateBoard(rows, columns uint8) {
 	board.RowNumber, board.ColumnNumber = rows, columns
 	q := uint64(0)
@@ -43,7 +43,7 @@ func (board *Board) GenerateBoard(rows, columns uint8) {
 	}
 }
 
-// GeneratePreviewRow() generates one row at once.
+// GeneratePreviewRow() generates one row at once with randomized buttons and set it up as board.PreviewRow.
 func (board *Board) GeneratePreviewRow() {
 	rowsLength, columns := uint8(len(board.Rows)), board.ColumnNumber
 	var row Row
@@ -58,7 +58,17 @@ func (board *Board) GeneratePreviewRow() {
 	board.PreviewRow = row
 }
 
-// RoundRows rotates the board rows and updates the buttons to correspond correctly to its respective Rows and columns, supposed to be used when changing rounds.
+// GetPreviewRow() returns current preview row.
+func (board *Board) GetPreviewRow() Row {
+	if DebugModeBoard() {
+		fmt.Printf("%v: %+v\n\n", Trace(), board.PreviewRow)
+	}
+	return board.PreviewRow
+}
+
+// RoundRows() rotates the rows and update its buttons to correctly correspond to its respective new row. Supposed to be used when changing rounds.
+// For example, considering a matrix of 5 (rows) by 20 (columns). The first row (at index 0) will be the bottom one, and the fifth (at index 4) will be the top one.
+// RoundRows will delete the first index, so Row X will now be Row X - 1. And it will also append the PreviewRow to the last index.
 func (board *Board) RoundRows() {
 	board.Rows = board.Rows[1:]                       // remove top element index[1]
 	board.Rows = append(board.Rows, board.PreviewRow) // add last element index[length - 1]
@@ -74,7 +84,7 @@ func (board *Board) RoundRows() {
 	}
 }
 
-// CountButtons return the quantity of buttons in the board grid.
+// CountButtons() return the quantity of buttons in the board grid.
 func (board *Board) countButtons() uint64 {
 	if DebugModeBoard() {
 		fmt.Printf("%v: %+v\n\n", Trace(), board.NumberOfButtons)
@@ -82,7 +92,7 @@ func (board *Board) countButtons() uint64 {
 	return board.NumberOfButtons
 }
 
-// CountEmptyButtons return the quantity of empty and Fulfilled buttons.
+// CountEmptyButtons() return the quantity of empty and Fulfilled buttons.
 func (board *Board) countEmptyButtons() uint64 {
 	rows, columns := board.RowNumber, board.ColumnNumber
 	q := 0
@@ -99,7 +109,8 @@ func (board *Board) countEmptyButtons() uint64 {
 	return uint64(q)
 }
 
-// TODO: Make it return dinamically depending on the quantity of players and number of columns
+// GetStartPosition() returns the players start positions.
+// TODO: Make it return dinamically depending on the quantity of players and number of columns.
 func (board *Board) GetStartPosition() {
 	row := uint8(1)
 

@@ -5,6 +5,7 @@ import (
 	"reflect"
 )
 
+// NewPlayerList() constructor returns a PlayerList instance.
 func NewPlayerList() IPlayerList {
 	p := &PlayerList{}
 
@@ -15,7 +16,7 @@ func NewPlayerList() IPlayerList {
 	return p
 }
 
-// GetPlayerList returns the playerList.
+// GetPlayerList() returns the playerList.
 func (playerList *PlayerList) GetPlayerList() PlayerList {
 	if DebugModePlayerList() {
 		fmt.Printf("%v: %+v\n\n", Trace(), *playerList)
@@ -24,9 +25,9 @@ func (playerList *PlayerList) GetPlayerList() PlayerList {
 	return *playerList
 }
 
-// AddPlayer adds a player into the playerList.
-// https://stackoverflow.com/questions/74915781/go-appending-elements-to-slice-of-struct
+// AddPlayer() adds a player into the playerList.
 func (playerList *PlayerList) AddPlayer(p Player) {
+	// In case of doubt about next line: https://stackoverflow.com/questions/74915781/go-appending-elements-to-slice-of-struct
 	*playerList = append(*playerList, p)
 
 	if DebugModePlayerList() {
@@ -34,15 +35,16 @@ func (playerList *PlayerList) AddPlayer(p Player) {
 	}
 }
 
-// RemovePlayer removes the given player from the playerList by overriding it with the last player (index -1) and removing the last index.
-// https://stackoverflow.com/questions/37334119/how-to-delete-an-element-from-a-slice-in-golang
-// https://stackoverflow.com/questions/38013922/slicing-a-slice-pointer-passed-as-argument
+// RemovePlayer() removes the given player from the playerList by overriding it with the last player (index -1) and removing the last index.
 func (playerList *PlayerList) RemovePlayer(p Player) {
 	if len(playerList.GetPlayerList()) == 0 {
 		return
 	}
 
 	i := playerList.FindPlayer(p)
+	// In case of doubt about next lines: 
+	// https://stackoverflow.com/questions/37334119/how-to-delete-an-element-from-a-slice-in-golang
+	// https://stackoverflow.com/questions/38013922/slicing-a-slice-pointer-passed-as-argument
 	(*playerList)[i] = (*playerList)[len(*playerList)-1]
 	(*playerList) = (*playerList)[:len(*playerList)-1]
 
@@ -51,7 +53,7 @@ func (playerList *PlayerList) RemovePlayer(p Player) {
 	}
 }
 
-// FindPlayer returns the index of a given player in the PlayerList. If not present returns -1.
+// FindPlayer() returns the index of a given player in the PlayerList. If not present returns -1.
 func (playerList *PlayerList) FindPlayer(p Player) (i int) {
 	i = -1
 	for k, v := range *playerList {
@@ -63,7 +65,7 @@ func (playerList *PlayerList) FindPlayer(p Player) (i int) {
 	return
 }
 
-// GetFourPlayers get the first 4 players in the list and form a group with them.
+// GetFourPlayers() get the first 4 players in the list and form a group with them.
 func (playerList *PlayerList) GroupFourPlayers(groups *Groups) (Group, error) {
 	if len(*playerList) >= 3 {
 		p1, p2, p3, p4 := (*playerList)[0], (*playerList)[1], (*playerList)[2], (*playerList)[3]
@@ -79,9 +81,9 @@ func (playerList *PlayerList) GroupFourPlayers(groups *Groups) (Group, error) {
 			Players: players,
 		}
 
-		// TODO: Implement an assynchronous function to verify if ID already exists.
+		// TODO: Implement an assynchronous function to verify if ID already exists and change it if its the case.
 			
-		// TODO: Implement MUTEX
+		// TODO:  Think if its necessary to Implement MUTEX.
 		go func() {
 			for _, v := range g.Players {
 				playerList.RemovePlayer(v)

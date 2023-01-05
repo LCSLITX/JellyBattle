@@ -5,6 +5,7 @@ import (
 	"time"
 )
 
+// NewGame() constructor returns a game instance.
 func NewGame(g *Groups) (IGame, error) {
 	if len(*g) == 0 {
 		return nil, fmt.Errorf("There's no group to create a game.")
@@ -27,20 +28,23 @@ func NewGame(g *Groups) (IGame, error) {
 	return game, nil
 }
 
+// GetGame() returns Game object.
 func (game *Game) GetGame() Game {
 	return *game
 }
 
-// TODO: StartGame wont be used as games do not have time limit, apparently. But rounds does. it'll be useful there.
+// StartGame() set variable Started to true and proceeds with a few specific procedures proper to initial moment as distribute Players to its starting positions, generate a few rows, start a ticker to count round time etc.
 func (game *Game) StartGame() bool {
 	game.Started = true
-
+	
 	game.DistributePlayers()
 	game.Board.GeneratePreviewRow()
 	game.Board.RoundRows()
 
 	ticker := time.NewTicker(DEFAULT_ROUND_TIME * time.Second)
-	timer := time.NewTimer(DEFAULT_GAME_TIME * time.Minute)
+
+	// TODO: Think if game won't have time limit.
+	// timer := time.NewTimer(DEFAULT_GAME_TIME * time.Minute)
 
 	go func() {
 		for {
@@ -48,11 +52,11 @@ func (game *Game) StartGame() bool {
 			case <-Finish:
 				game.FinishGame()
 				ticker.Stop()
-			case <-timer.C:
-				game.FinishGame()
-				ticker.Stop()
+			// case <-timer.C:
+			// 	game.FinishGame()
+			// 	ticker.Stop()
 			case <-ticker.C:
-				game.RoundingUp()
+				game.RoundUp()
 			}
 		}
 	}()
@@ -64,21 +68,26 @@ func (game *Game) StartGame() bool {
 	return game.Started
 }
 
-func (game *Game) RoundingUp() {
+// RoundUp() will execute the functions responsible for in-between round actions. 
+func (game *Game) RoundUp() {
 	game.MovePlayers()
 	game.Board.GeneratePreviewRow()
 	game.Board.RoundRows()
 }
 
+// Games will only finish with FORFEIT or DEATH.
+// FinishGame() is supposed to be called with 3 DEATHS and FORFEIT if there are only two players alive and set variable Finished to true.
 func (game *Game) FinishGame() bool {
 	game.Finished = true
 	return game.Finished
 }
 
+// Think if it will be really necessary.
 func (game *Game) GetWinners() Group {
 	return game.Group
 }
 
+// Think if death is gonna happed this way.
 // Dead function should re-order game.Group so the first player in group is the winner and the last is the loser.
 func (game *Game) Dead(p Player) {
 	// TODO: Create Logic to rank players.
@@ -88,16 +97,7 @@ func (game *Game) Dead(p Player) {
 	}
 }
 
-// TODO: think about how DoDamage is gonna work. Apparently it will need Board and special.
-// Because every weapon has one type of calculating the attacked player.
-// Lasers do damage horizontally and vertically
-// Nuke do damage to all players
-// Air Strike seems to have a percentage to do damage to every visible player in the board
-// Random Drop do damage to one visible random player
-// Handbag do damage to all players within one square
-// Blast do damage to all players, while its increases distance, decrease blast damage.
-// CalculateAttackablePlayers receives Special and Player (who used the special) and returns a list of Players who are supposed to be damaged.
-
+// MovePlayers() moves players to its jump positions.
 func (game *Game) MovePlayers() {
 	for _, p := range game.Group.Players {
 		p.JumpTo()
@@ -107,6 +107,7 @@ func (game *Game) MovePlayers() {
 	}
 }
 
+// DistributePlayers() distributes players to its starting positions over the board.
 func (game *Game) DistributePlayers() {
 	game.Board.GetStartPosition()
 	b := game.Board.StartPositions

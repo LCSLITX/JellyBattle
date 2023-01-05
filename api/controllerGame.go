@@ -31,7 +31,7 @@ func CreateGame(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
 	json.NewEncoder(w).Encode(GameResponse{
-		Game: createdGame, // TODO: must return only success or failure not game.
+		Game: createdGame, // FIX: must return only success or failure not game.
 	})
 }
 

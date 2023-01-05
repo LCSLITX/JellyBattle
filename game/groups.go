@@ -4,6 +4,7 @@ import (
 	"fmt"
 )
 
+// NewGroups() constructor returns a groups instance.
 func NewGroups() IGroups {
 	g := &Groups{}
 
@@ -13,6 +14,7 @@ func NewGroups() IGroups {
 	return g
 }
 
+// GetGroups() returns groups.
 func (groups *Groups) GetGroups() *Groups {
 	if DebugModeGroups() {
 		fmt.Printf("%v: %+v\n\n", Trace(), groups)
@@ -20,6 +22,7 @@ func (groups *Groups) GetGroups() *Groups {
 	return groups
 }
 
+// AddGroup() adds a group to groups.
 func (groups *Groups) AddGroup(group Group) {
 	*groups = append(*groups, group)
 
@@ -28,6 +31,7 @@ func (groups *Groups) AddGroup(group Group) {
 	}
 }
 
+// RemoveGroup() removes a group of groups.
 func (groups *Groups) RemoveGroup(g Group) {
 	i := groups.FindGroup(g)
 	(*groups)[i] = (*groups)[len(*groups)-1]
@@ -38,7 +42,7 @@ func (groups *Groups) RemoveGroup(g Group) {
 	}
 }
 
-// FindGroup returns the index of a given group in the Groups. If not present returns -1.
+// FindGroup() returns the index of a given group in the Groups array. If not present returns -1.
 func (groups *Groups) FindGroup(g Group) (i int) {
 	i = -1
 	for k, v := range *groups {
@@ -50,6 +54,7 @@ func (groups *Groups) FindGroup(g Group) (i int) {
 	return
 }
 
+// GetFirstGroup() returns the first group in the Groups array.
 func (groups *Groups) GetFirstGroup() Group {
 	if len(*groups) == 0 {
 		return Group{}

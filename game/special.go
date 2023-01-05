@@ -6,6 +6,8 @@ import (
 
 // Check out more struct based enums: https://threedots.tech/post/safer-enums-in-go/
 
+
+// SPECIAL TYPE
 type specialType uint8
 
 const (
@@ -24,6 +26,8 @@ func (s specialType) EnumIndex() int {
 	return int(s)
 }
 
+
+// SPECIAL NAME
 type specialName uint8
 
 const (
@@ -54,7 +58,6 @@ func (s specialName) String() string {
 	return [...]string{"Handbag", "Blast", "Laser", "Air Strike", "Random Drop", "Nuke", "Invisible", "De-Bonus", "Shield", "Freeze", "Jelly Rage", "Triple Jump", "Teleport", "Mine", "Health", "Super Jelly"}[s]
 }
 
-// TODO: Add descriptions. Theres three videos on youtube from which we can take original descriptions.
 func (s specialName) Description() string {
 	return [...]string{
 		"Collect to injure an opponent within one square", // 0
@@ -82,29 +85,29 @@ func (s specialName) EnumIndex() int {
 
 var specials Specials = Specials{
 	// Weapon (Pink)
-	{ID: uint8(specialName(0).EnumIndex()), Type: specialType(0).String(), Name: specialName(0).String(), Multiplier: 1},
-	{ID: uint8(specialName(1).EnumIndex()), Type: specialType(0).String(), Name: specialName(1).String(), Multiplier: 1},
-	{ID: uint8(specialName(2).EnumIndex()), Type: specialType(0).String(), Name: specialName(2).String(), Multiplier: 1},
-	{ID: uint8(specialName(3).EnumIndex()), Type: specialType(0).String(), Name: specialName(3).String(), Multiplier: 1},
-	{ID: uint8(specialName(4).EnumIndex()), Type: specialType(0).String(), Name: specialName(4).String(), Multiplier: 1}, // TODO: The damage of this special varies 25, 35 and 50.
-	{ID: uint8(specialName(5).EnumIndex()), Type: specialType(0).String(), Name: specialName(5).String(), Multiplier: 1},
+	{ID: uint8(specialName(0).EnumIndex()), Type: specialType(0).String(), Name: specialName(0).String(), Multiplier: 1, Description: specialName(0).Description() },
+	{ID: uint8(specialName(1).EnumIndex()), Type: specialType(0).String(), Name: specialName(1).String(), Multiplier: 1, Description: specialName(1).Description() },
+	{ID: uint8(specialName(2).EnumIndex()), Type: specialType(0).String(), Name: specialName(2).String(), Multiplier: 1, Description: specialName(2).Description() },
+	{ID: uint8(specialName(3).EnumIndex()), Type: specialType(0).String(), Name: specialName(3).String(), Multiplier: 1, Description: specialName(3).Description() },
+	{ID: uint8(specialName(4).EnumIndex()), Type: specialType(0).String(), Name: specialName(4).String(), Multiplier: 1, Description: specialName(4).Description() }, // TODO: The damage of this special varies 25, 35 and 50.
+	{ID: uint8(specialName(5).EnumIndex()), Type: specialType(0).String(), Name: specialName(5).String(), Multiplier: 1, Description: specialName(5).Description() },
 	// Buff (Blue)
-	{ID: uint8(specialName(6).EnumIndex()), Type: specialType(1).String(), Name: specialName(6).String(), Multiplier: 1},
-	{ID: uint8(specialName(7).EnumIndex()), Type: specialType(1).String(), Name: specialName(7).String(), Multiplier: 1},
-	{ID: uint8(specialName(8).EnumIndex()), Type: specialType(1).String(), Name: specialName(8).String(), Multiplier: 1},
-	{ID: uint8(specialName(9).EnumIndex()), Type: specialType(1).String(), Name: specialName(9).String(), Multiplier: 1},
-	{ID: uint8(specialName(10).EnumIndex()), Type: specialType(1).String(), Name: specialName(10).String(), Multiplier: 1},
-	{ID: uint8(specialName(11).EnumIndex()), Type: specialType(1).String(), Name: specialName(11).String(), Multiplier: 1},
+	{ID: uint8(specialName(6).EnumIndex()), Type: specialType(1).String(), Name: specialName(6).String(), Multiplier: 1, Description: specialName(6).Description() },
+	{ID: uint8(specialName(7).EnumIndex()), Type: specialType(1).String(), Name: specialName(7).String(), Multiplier: 1, Description: specialName(7).Description() },
+	{ID: uint8(specialName(8).EnumIndex()), Type: specialType(1).String(), Name: specialName(8).String(), Multiplier: 1, Description: specialName(8).Description() },
+	{ID: uint8(specialName(9).EnumIndex()), Type: specialType(1).String(), Name: specialName(9).String(), Multiplier: 1, Description: specialName(9).Description() },
+	{ID: uint8(specialName(10).EnumIndex()), Type: specialType(1).String(), Name: specialName(10).String(), Multiplier: 1, Description: specialName(10).Description() },
+	{ID: uint8(specialName(11).EnumIndex()), Type: specialType(1).String(), Name: specialName(11).String(), Multiplier: 1, Description: specialName(11).Description() },
 	// Utility (Yellow)
-	{ID: uint8(specialName(12).EnumIndex()), Type: specialType(2).String(), Name: specialName(12).String(), Multiplier: 1},
+	{ID: uint8(specialName(12).EnumIndex()), Type: specialType(2).String(), Name: specialName(12).String(), Multiplier: 1, Description: specialName(12).Description() },
 	// Trap (Red)
-	{ID: uint8(specialName(13).EnumIndex()), Type: specialType(3).String(), Name: specialName(13).String(), Multiplier: 1},
+	{ID: uint8(specialName(13).EnumIndex()), Type: specialType(3).String(), Name: specialName(13).String(), Multiplier: 1, Description: specialName(13).Description() },
 	// Healing (Green)
 	{ID: uint8(specialName(14).EnumIndex()), Type: specialType(4).String(), Name: specialName(14).String(), Multiplier: 1, Description: specialName(14).Description() },
-	{ID: uint8(specialName(15).EnumIndex()), Type: specialType(4).String(), Name: specialName(15).String(), Multiplier: 1},
+	{ID: uint8(specialName(15).EnumIndex()), Type: specialType(4).String(), Name: specialName(15).String(), Multiplier: 1, Description: specialName(15).Description() },
 }
 
-// GenerateSpell returns a spell
+// GenerateSpecial() returns a special
 func GenerateSpecial() Special {
 	rand := RandomNumber(ZERO_TO_FIFTEEN) // 16 possible random numbers
 	s := specials[specialName(rand).EnumIndex()]

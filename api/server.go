@@ -23,7 +23,8 @@ func Server() error {
 	http.HandleFunc("/game/start", StartGame)
 
 	os.Setenv("PORT", ":3333")
-	fmt.Printf("Server running on localhost%v...\n", os.Getenv("PORT"))
+
+	fmt.Printf("Server running on localhost%v...\n", PORT)
 
 	// This go routine checks if Playerlist has four players and then creates a game.
 	go func() {
@@ -51,11 +52,11 @@ func Server() error {
 			} else {
 				fmt.Printf("PlayerList contains %v players.\n", len(game.PLAYERLIST))
 			}
-			time.Sleep(game.DEFAULT_INTERVAL)
+			time.Sleep(DEFAULT_INTERVAL)
 		}
 	}()
 
-	if err := http.ListenAndServe(os.Getenv("PORT"), nil); err != nil {
+	if err := http.ListenAndServe(PORT, nil); err != nil {
 		return err
 	}
 	return nil
