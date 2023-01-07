@@ -7,22 +7,20 @@ package game
 // Special start at row index 3.
 // Preview row is row index 5.
 type IBoard interface {
-	countButtons() uint64	// CountButtons return the quantity of buttons in the grid.
-	countEmptyButtons() uint64	// CountEmptyButtons return the quantity of empty and Fulfilled buttons.
-	GenerateBoard(rows, columns uint8)	// GenerateBoard creates a board with specified number of rows and columns
-	GeneratePreviewRow() // GeneratePreviewRow generate one row at once
+	countButtons() uint64              // CountButtons return the quantity of buttons in the grid.
+	countEmptyButtons() uint64         // CountEmptyButtons return the quantity of empty and Fulfilled buttons.
+	GenerateBoard(rows, columns uint8) // GenerateBoard creates a board with specified number of rows and columns
+	GeneratePreviewRow()               // GeneratePreviewRow generate one row at once
 	GetStartPosition()
-	GetBoard() Board	// GetBoard returns the board
-	RoundRows()	// RoundRows rotates the board rows every round.
+	GetBoard() Board // GetBoard returns the board
+	RoundRows()      // RoundRows rotates the board rows every round.
 }
 
 type IButton interface {
-	EraseButtonSpecial()	// EraseButtonSpecial updates a button by removing its special
-	RandomizeButton()	// RandomizeButton generate an empty button or special button
-	UpdateButton(row, column uint8)	// UpdateButton updates row and columns inside each button
+	EraseButtonSpecial()            // EraseButtonSpecial updates a button by removing its special
+	RandomizeButton()               // RandomizeButton generate an empty button or special button
+	UpdateButton(row, column uint8) // UpdateButton updates row and columns inside each button
 }
-
-
 
 // _____ PLAYERS _____
 
@@ -41,10 +39,10 @@ type IPLayer interface {
 
 type IDummy interface{}
 
-type IPlayerList interface {
+type IAvailablePlayersList interface {
 	AddPlayer(Player)
 	FindPlayer(p Player) (i int)
-	GetPlayerList() PlayerList
+	GetPlayerList() AvailablePlayersList
 	GroupFourPlayers(*Groups) (Group, error)
 	RemovePlayer(Player)
 }

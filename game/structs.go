@@ -58,9 +58,9 @@ type Player struct {
 	Buffs        SpecialCharges
 }
 
-type Players []Player // Supposed to be used for a specific game, players will leave PlayerList to form a Players group to join game.
+type Players [4]Player // Supposed to be used for a specific game, players will leave PlayerList to form a Players group to join game.
 
-type PlayerList []Player // Supposed to have all the players available to play a game.
+type AvailablePlayersList []Player // Supposed to have all the players available to play a game.
 
 type Position struct {
 	Row    uint8 // x
