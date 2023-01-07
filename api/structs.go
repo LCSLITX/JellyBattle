@@ -7,6 +7,17 @@ type PlayerResponse struct {
 	Rank uint8  `json:"rank"`
 }
 
+type PlayerRequest struct {
+	Name string `json:"name"`
+}
+
+type GameRequest struct {
+	GID string `json:"gid"`
+	PID string  `json:"pid"`
+	Name string `json:"name"`
+	JumpPosition game.Position `json:"jumpPosition"`
+}
+
 type PlayerListResponse struct {
 	List []PlayerResponse `json:"list"`
 }

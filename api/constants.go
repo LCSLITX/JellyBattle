@@ -5,7 +5,9 @@ import (
 	"time"
 )
 
-var PORT string = os.Getenv("PORT")
+func init() {
+	os.Setenv("PORT", ":3333")
+}
 
 const (
 	DEFAULT_INTERVAL = time.Second * 15

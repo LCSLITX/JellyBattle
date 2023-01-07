@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JellyBattle</title>
+</head>
+<body>
+  <input type="text" id="player_name" placeholder="player name" />
+  <button onclick="createPlayer()">Create Player</button>
+  <script>
+    
+    function createPlayer() {
+      var name = document.getElementById("player_name").value;
+      var body = {
+        name,
+      };
+
+      const reqInfo = {
+        method: 'POST',
+        // mode: "cors", // TODO:  cors should be allowed. Security reasons.
+        origin: "http://localhost:3333",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify(body),
+      };
+
+      fetch("http://localhost:3333/player/create", reqInfo)
+        .then((response) => response.json())
+        .then((data) => console.log(data))
+        .catch((err) => console.log(err));
+    }
+    
+    const ws = new WebSocket("ws://localhost:3333/ws/start")
+    // Show a connected message when the WebSocket is opened.
+    ws.onopen = function(event) {
+      obj = {
+        name: "Lucas",
+        gid: "lucas",
+        pid: "lucas",
+        jumpPosition: {
+          Row: 1,
+          Column: 1,
+        },
+      }
+      j = JSON.stringify(obj)
+      ws.send(j);
+    };
+
+    ws.onmessage = function(event) {
+      console.log(event);
+    };
+  </script>
+  <style>
+    html {    
+        background: url('/images/image.png') no-repeat center fixed;     
+        background-size: cover;
+    }
+  </style>
+</body>
+</html>
