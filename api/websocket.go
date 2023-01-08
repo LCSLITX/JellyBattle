@@ -58,3 +58,20 @@ func WSGame(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 }
+
+func WSPlayerList(w http.ResponseWriter, r *http.Request) {
+	wsConn, err := upgrader.Upgrade(w, r, nil)
+	if err != nil {
+		fmt.Printf(err.Error())
+	}
+
+	defer wsConn.Close()
+
+	for {
+
+		if DebugModeWebSocket() {
+			fmt.Printf("wsConn.RemoteAddr(): %s\n", wsConn.RemoteAddr())
+		}
+	}
+}
+

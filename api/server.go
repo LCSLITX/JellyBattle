@@ -31,6 +31,7 @@ func Server() error {
 
 	// WEBSOCKET
 	http.HandleFunc("/ws/start", WSGame)
+	http.HandleFunc("/ws/playerlist", WSPlayerList)
 	
 	PORT := os.Getenv("PORT")
 	
@@ -42,35 +43,3 @@ func Server() error {
 
 	return nil
 }
-
-
-// TODO:  Take this horrible thing out of here.
-// This go routine checks if Playerlist has four players and then creates a game.
-// go func() {
-// 	for {
-// 		if len(game.PLAYERLIST) >= 4 {
-
-// 			_, err := game.PLAYERLIST.GroupFourPlayers(game.GROUPS)
-// 			if err != nil {
-// 				fmt.Println(fmt.Errorf(err.Error())) // horrible
-// 				os.Exit(1)
-// 			}
-// 			fmt.Printf("Created a group.\n")
-
-// 			createdGame, err := game.NewGame(game.GROUPS)
-// 			if err != nil {
-// 				fmt.Println(fmt.Errorf(err.Error())) // horrible
-// 				os.Exit(1)
-// 			}
-
-// 			fmt.Printf("Created a game: %+v.\n\n", createdGame.GetGame())
-// 			game.GAMES.AddGame(createdGame.GetGame())
-
-// 			fmt.Printf("Added a game to games: %+v.\n", game.GAMES.GetGames())
-
-// 		} else {
-// 			fmt.Printf("PlayerList contains %v players.\n", len(game.PLAYERLIST))
-// 		}
-// 		time.Sleep(DEFAULT_INTERVAL)
-// 	}
-// }()
