@@ -9,7 +9,7 @@ func NewGroups() IGroups {
 	g := &Groups{}
 
 	if DebugModeGroups() {
-		fmt.Printf("%v: %+v\n\n", Trace(), g)
+		fmt.Printf("%v: %+v\n\n", Trace(""), g)
 	}
 	return g
 }
@@ -17,7 +17,7 @@ func NewGroups() IGroups {
 // GetGroups() returns groups.
 func (groups *Groups) GetGroups() *Groups {
 	if DebugModeGroups() {
-		fmt.Printf("%v: %+v\n\n", Trace(), groups)
+		fmt.Printf("%v: %+v\n\n", Trace(""), groups)
 	}
 	return groups
 }
@@ -27,7 +27,7 @@ func (groups *Groups) AddGroup(group Group) {
 	*groups = append(*groups, group)
 
 	if DebugModeGroups() {
-		fmt.Printf("%v: %+v\n\n", Trace(), *groups)
+		fmt.Printf("%v: %+v\n\n", Trace(""), *groups)
 	}
 }
 
@@ -38,7 +38,7 @@ func (groups *Groups) RemoveGroup(g Group) {
 	(*groups) = (*groups)[:len(*groups)-1]
 
 	if DebugModeGroups() {
-		fmt.Printf("%v: %+v\n\n", Trace(), *groups)
+		fmt.Printf("%v: %+v\n\n", Trace(""), *groups)
 	}
 }
 

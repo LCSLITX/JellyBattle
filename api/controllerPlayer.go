@@ -33,8 +33,8 @@ func CreatePlayer(w http.ResponseWriter, r *http.Request) {
 	game.AVAILABLEPLAYERSLIST.AddPlayer(p)
 
 	if DebugModeWebSocket() {
-		fmt.Printf("%v: %+v\n\n", game.Trace(), req)
-		fmt.Printf("%v: %+v\n\n", game.Trace(), w)
+		fmt.Printf("%v: %+v\n\n", game.Trace(""), req)
+		fmt.Printf("%v: %+v\n\n", game.Trace(""), w)
 	}
 
 	if err := json.NewEncoder(w).Encode(PlayerResponse{

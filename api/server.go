@@ -22,7 +22,7 @@ func Server() error {
 	// Player
 	http.HandleFunc("/player/create", CreatePlayer)
 	// PlayerList
-	http.HandleFunc("/playerlist", GetPlayerList)
+	http.HandleFunc("/playerlist", GetAvailablePlayersList)
 	// Games
 	http.HandleFunc("/games", GetGames)
 	http.HandleFunc("/games/getbyid", GetGameByID)
@@ -32,9 +32,9 @@ func Server() error {
 	// WEBSOCKET
 	http.HandleFunc("/ws/start", WSGame)
 	http.HandleFunc("/ws/playerlist", WSPlayerList)
-	
+
 	PORT := os.Getenv("PORT")
-	
+
 	// Server
 	fmt.Printf("Server starting on localhost%s...\n", PORT)
 	if err := http.ListenAndServe(PORT, nil); err != nil {

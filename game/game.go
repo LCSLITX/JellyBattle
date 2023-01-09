@@ -22,7 +22,7 @@ func NewGame(g *Groups) (IGame, error) {
 	}
 
 	if DebugModeGame() {
-		fmt.Printf("%v: %+v\n\n", Trace(), game)
+		fmt.Printf("%v: %+v\n\n", Trace(""), game)
 	}
 
 	return game, nil
@@ -36,7 +36,7 @@ func (game *Game) GetGame() Game {
 // StartGame() set variable Started to true and proceeds with a few specific procedures proper to initial moment as distribute Players to its starting positions, generate a few rows, start a ticker to count round time etc.
 func (game *Game) StartGame() bool {
 	game.Started = true
-	
+
 	game.DistributePlayers()
 	game.Board.GeneratePreviewRow()
 	game.Board.RoundRows()
@@ -62,13 +62,13 @@ func (game *Game) StartGame() bool {
 	}()
 
 	if DebugModeGame() {
-		fmt.Printf("%v: %+v\n\n", Trace(), game)
+		fmt.Printf("%v: %+v\n\n", Trace(""), game)
 	}
 
 	return game.Started
 }
 
-// RoundUp() will execute the functions responsible for in-between round actions. 
+// RoundUp() will execute the functions responsible for in-between round actions.
 func (game *Game) RoundUp() {
 	game.MovePlayers()
 	game.Board.GeneratePreviewRow()
@@ -102,7 +102,7 @@ func (game *Game) MovePlayers() {
 	for _, p := range game.Group.Players {
 		p.JumpTo()
 		if DebugModeBoard() {
-			fmt.Printf("%v: %+v\n\n", Trace(), p)
+			fmt.Printf("%v: %+v\n\n", Trace(""), p)
 		}
 	}
 }
@@ -111,7 +111,9 @@ func (game *Game) MovePlayers() {
 func (game *Game) DistributePlayers() {
 	game.Board.GetStartPosition()
 	b := game.Board.StartPositions
+	i := 0
 	for k := range game.Group.Players {
-		game.Group.Players[k].Position = b[k]
+		game.Group.Players[k].Position = b[i]
+		i ++
 	}
 }

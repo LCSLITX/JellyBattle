@@ -8,7 +8,7 @@ import (
 	"github.com/lucassauro/JellyBattle/game"
 )
 
-func GetPlayerList(w http.ResponseWriter, r *http.Request) {
+func GetAvailablePlayersList(w http.ResponseWriter, r *http.Request) {
 	fmt.Printf("[%s] %s%s\n", r.Method, r.Host, r.URL)
 
 	if r.Method != "GET" {

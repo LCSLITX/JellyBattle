@@ -48,15 +48,25 @@ func DebugModeSpecial() bool {
 	return os.Getenv("DEBUG_MODE_SPECIAL") == "true"
 }
 
-// Trace() used for debug purpose, to show file, line and function on printing information.
-func Trace() string {
+func DebugModeStructs() bool {
+	return os.Getenv("DEBUG_MODE_STRUCTS") == "true"
+}
+
+// Trace("") used for debug purpose, to show file, line and function on printing information.
+// if receives "function" return only the function name.
+// Otherwise returns file, line and function.
+func Trace(object string) string {
 	pc := make([]uintptr, 15)
 	n := runtime.Callers(2, pc)
 	frames := runtime.CallersFrames(pc[:n])
 	frame, _ := frames.Next()
 	file := strings.Split(frame.File, "/")
 	function := strings.Split(frame.Function, "/")
-	return fmt.Sprintf("[%s:%d - %s]", file[7], frame.Line, function[3])
+	if object == "function" {
+		return function[len(function)-1]
+	} else {
+		return fmt.Sprintf("[%s:%d - %s]", file[len(file)-1], frame.Line, function[len(function)-1])
+	}
 }
 
 // TODO: Implement GenerateID
@@ -67,7 +77,7 @@ func GenerateID() string {
 
 // VerifyDuplicateID returns true if ID is already used.
 func VerifyDuplicateID(g *Groups, id string) bool {
-	for _, v := range (*g) {
+	for _, v := range *g {
 		if v.ID == id {
 			return true
 		}

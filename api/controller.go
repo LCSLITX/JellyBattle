@@ -17,5 +17,7 @@ func GetHome(w http.ResponseWriter, r *http.Request) {
 
 func GetPing(w http.ResponseWriter, r *http.Request) {
 	fmt.Printf("[%s] %s%s\n", r.Method, r.Host, r.URL)
+	// wsConn, _ := upgrader.Upgrade(w, r, nil)
+	// wsConn.SetPingHandler()
 	io.WriteString(w, "Pong!\n")
 }

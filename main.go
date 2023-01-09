@@ -9,12 +9,13 @@ func main() {
 }
 
 // func main() {
-// 	// os.Setenv("DEBUG_MODE_BOARD", "true")
-// 	os.Setenv("DEBUG_MODE_GROUPS", "true")
-// 	os.Setenv("DEBUG_MODE_GAME", "true")
-// 	os.Setenv("DEBUG_MODE_PLAYER", "true")
-// 	os.Setenv("DEBUG_MODE_PLAYERLIST", "true")
-// 	// os.Setenv("DEBUG_MODE_SPECIAL", "true")
+// os.Setenv("DEBUG_MODE_STRUCTS", "true")
+// os.Setenv("DEBUG_MODE_GROUPS", "true")
+// os.Setenv("DEBUG_MODE_GAME", "true")
+// os.Setenv("DEBUG_MODE_PLAYER", "true")
+// os.Setenv("DEBUG_MODE_PLAYERLIST", "true")
+// os.Setenv("DEBUG_MODE_BOARD", "true")
+// os.Setenv("DEBUG_MODE_SPECIAL", "true")
 
 // 	rows := game.DEFAULT_ROWS
 // 	columns := game.DEFAULT_COLUMNS

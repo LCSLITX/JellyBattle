@@ -12,7 +12,7 @@ func NewPlayer(name string) IPLayer {
 	}
 
 	if DebugModePlayer() {
-		fmt.Printf("%v: %+v\n\n", Trace(), player)
+		fmt.Printf("%v: %+v\n\n", Trace(""), player)
 	}
 
 	return player
@@ -21,7 +21,7 @@ func NewPlayer(name string) IPLayer {
 // GetPlayer() returns a player.
 func (player *Player) GetPlayer() Player {
 	if DebugModePlayer() {
-		fmt.Printf("%v: %+v\n\n", Trace(), *player)
+		fmt.Printf("%v: %+v\n\n", Trace(""), *player)
 	}
 
 	return *player
@@ -32,7 +32,7 @@ func (player *Player) GetPlayer() Player {
 // - 2 on a normal basis;
 //
 // - 3 with Triple Jump buff activated.
-func (player *Player) GetJumpDistance()  {
+func (player *Player) GetJumpDistance() {
 	player.JumpDistance = 2
 	for _, v := range player.Buffs {
 		if v.SpecialName == specialName.String(11) {
@@ -40,7 +40,7 @@ func (player *Player) GetJumpDistance()  {
 		}
 	}
 	if DebugModePlayer() {
-		fmt.Printf("%v: %+v\n\n", Trace(), player.JumpDistance)
+		fmt.Printf("%v: %+v\n\n", Trace(""), player.JumpDistance)
 	}
 }
 
@@ -61,16 +61,16 @@ func (player *Player) JumpTo() {
 	player.Position.Row, player.Position.Column = player.JumpPosition.Row, player.JumpPosition.Column
 
 	if DebugModePlayer() {
-		fmt.Printf("%v: %+v\n\n", Trace(), *player)
+		fmt.Printf("%v: %+v\n\n", Trace(""), *player)
 	}
 }
 
 // NextJump() is the function that receives the next JumpPosition. Where the player intent to move on next round.
 func (player *Player) NextJump(p Position) {
 	player.JumpPosition.Row, player.JumpPosition.Column = p.Row, p.Column
-	
+
 	if DebugModePlayer() {
-		fmt.Printf("%v: %+v\n\n", Trace(), *player)
+		fmt.Printf("%v: %+v\n\n", Trace(""), *player)
 	}
 }
 

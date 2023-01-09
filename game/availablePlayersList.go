@@ -10,7 +10,7 @@ func NewPlayerList() IAvailablePlayersList {
 	p := &AvailablePlayersList{}
 
 	if DebugModePlayerList() {
-		fmt.Printf("%v: %+v\n\n", Trace(), p)
+		fmt.Printf("%v: %+v\n\n", Trace(""), p)
 	}
 
 	return p
@@ -19,7 +19,7 @@ func NewPlayerList() IAvailablePlayersList {
 // GetPlayerList() returns the playerList.
 func (playerList *AvailablePlayersList) GetPlayerList() AvailablePlayersList {
 	if DebugModePlayerList() {
-		fmt.Printf("%v: %+v\n\n", Trace(), *playerList)
+		fmt.Printf("%v: %+v\n\n", Trace(""), *playerList)
 	}
 
 	return *playerList
@@ -28,10 +28,10 @@ func (playerList *AvailablePlayersList) GetPlayerList() AvailablePlayersList {
 // AddPlayer() adds a player into the playerList.
 func (playerList *AvailablePlayersList) AddPlayer(p Player) {
 	// In case of doubt about next line: https://stackoverflow.com/questions/74915781/go-appending-elements-to-slice-of-struct
-	*playerList = append(*playerList, p)
+	*playerList = append(*playerList, &p)
 
 	if DebugModePlayerList() {
-		fmt.Printf("%v: %+v\n\n", Trace(), *playerList)
+		fmt.Printf("%v: %+v\n\n", Trace(""), *playerList)
 	}
 }
 
@@ -49,7 +49,7 @@ func (playerList *AvailablePlayersList) RemovePlayer(p Player) {
 	(*playerList) = (*playerList)[:len(*playerList)-1]
 
 	if DebugModePlayerList() {
-		fmt.Printf("%v: %+v\n\n", Trace(), *playerList)
+		fmt.Printf("%v: %+v\n\n", Trace(""), *playerList)
 	}
 }
 
@@ -69,12 +69,11 @@ func (playerList *AvailablePlayersList) FindPlayer(p Player) (i int) {
 func (playerList *AvailablePlayersList) GroupFourPlayers(groups *Groups) (Group, error) {
 	if len(*playerList) >= 3 {
 		p1, p2, p3, p4 := (*playerList)[0], (*playerList)[1], (*playerList)[2], (*playerList)[3]
-		players := Players{
-			p1,
-			p2,
-			p3,
-			p4,
-		}
+		players := make(map[string]*Player)
+		players[p1.ID] = p1
+		players[p2.ID] = p2
+		players[p3.ID] = p3
+		players[p4.ID] = p4
 
 		g := Group{
 			ID:      GenerateID(), // TODO: Function to generate ID.
@@ -86,7 +85,7 @@ func (playerList *AvailablePlayersList) GroupFourPlayers(groups *Groups) (Group,
 		// TODO:  Think if its necessary to Implement MUTEX.
 		go func() {
 			for _, v := range g.Players {
-				playerList.RemovePlayer(v)
+				playerList.RemovePlayer(*v)
 			}
 		}()
 

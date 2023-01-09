@@ -12,10 +12,11 @@ type PlayerRequest struct {
 }
 
 type GameRequest struct {
-	GID string `json:"gid"`
-	PID string  `json:"pid"`
-	Name string `json:"name"`
+	GID          string        `json:"gid"`
+	PID          string        `json:"pid"`
+	Name         string        `json:"name"`
 	JumpPosition game.Position `json:"jumpPosition"`
+	Message      string        `json:"message"`
 }
 
 type PlayerListResponse struct {
