@@ -6,7 +6,13 @@ import (
 
 // NewPlayer() constructor returns a player instance.
 func NewPlayer(name string) IPLayer {
+	id, err := GenerateID()
+	if err != nil {
+		fmt.Println(err)
+	}
+
 	player := &Player{
+		ID:   id,
 		Name: name,
 		Rank: uint8(0),
 	}

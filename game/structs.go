@@ -28,20 +28,27 @@ type Dummy struct { // TODO: Decide future of Dummies
 	Rank uint8
 }
 
-var Finish chan bool // outside Game because its not compatible with enconding/json.NewDecoder().Decode().
-
 type Game struct { // Struct Game refers to a game, composed by a group of players and a board.
-	ID       string
-	Started  bool // Not sure yet
-	Finished bool // Not sure yet
-	Deaths   uint8
-	Chat     []string // Not sure yet
-	Board    Board
-	Group    Group
+	Started     bool // Not sure yet
+	Finished    bool // Not sure yet
+	ID          string
+	RoundNumber uint16
+	Deaths      Players
+	Board       Board
+	Group       Group
+	Finish      chan bool // outside Game because its not compatible with enconding/json.NewDecoder().Decode().
+	Chat        []Message // Not sure yet
+	Broadcast   chan Message
+	Send        chan bool
 	// Timer    time.Duration // Not sure yet
 }
 
-type Games map[string]Game
+type Message struct {
+	PlayerID string
+	Msg      string
+}
+
+type Games map[string]*Game
 
 type Group struct {
 	ID      string
@@ -64,15 +71,14 @@ type Player struct {
 	Buffs        SpecialCharges
 }
 
-
 // TODO:  Think about the possibility of changing array for maps. Maybe it'll be better.
 type Players map[string]*Player // Supposed to be used for a specific game, players will leave PlayerList to form a Players group to join game.
 
 // TODO:  Think about the possibility of changing array for maps. Maybe it'll be better.
-type AvailablePlayersList []*Player // Supposed to have all the players available to play a game.
+type AvailablePlayersList map[string]*Player // Supposed to have all the players available to play a game.
 
 type Position struct {
-	Row    uint8 `json:"r"`    // x
+	Row    uint8 `json:"r"` // x
 	Column uint8 `json:"c"` // y
 }
 

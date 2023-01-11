@@ -16,7 +16,7 @@ func CreatePlayer(w http.ResponseWriter, r *http.Request) {
 	// set response headers to json
 	w.Header().Set("content-Type", "application/json")
 
-	if r.Method != "POST" {
+	if r.Method != http.MethodPost {
 		http.Error(w, http.StatusText(http.StatusMethodNotAllowed), http.StatusMethodNotAllowed)
 		return
 	}

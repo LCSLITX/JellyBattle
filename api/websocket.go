@@ -1,7 +1,6 @@
 package api
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"time"
@@ -51,9 +50,25 @@ func WSGame(w http.ResponseWriter, r *http.Request) {
 			break
 		}
 
-		if req.Message != "" {
-			// message flow 
-			fmt.Printf("Received MESSAGE: %s\n", req.Message)
+		if req.Message.Msg != "" {
+			// message flow
+			fmt.Printf("Received MESSAGE: %+v\n", req.Message)
+			g, err := game.GAMES.FindGame(req.GID)
+			if err != nil {
+				fmt.Printf("%s\n\n", err.Error())
+				break
+			}
+
+			g.Broadcast <- req.Message
+
+			select {
+			case b := <-g.Send:
+				if b {
+					wsConn.WriteJSON(g.Chat)
+					g.Send <- false
+				}
+			}
+
 		}
 
 		if req.JumpPosition.Row != 0 && req.JumpPosition.Column != 0 {
@@ -61,22 +76,22 @@ func WSGame(w http.ResponseWriter, r *http.Request) {
 			fmt.Printf("Received POSITION: %+v\n", req.JumpPosition)
 		}
 
-		// Response
-		ok, err := json.Marshal("ok")
-		if err != nil {
-			fmt.Printf("%s\n\n", err.Error())
-			break
-		}
+		// // Response
+		// ok, err := json.Marshal("ok")
+		// if err != nil {
+		// 	fmt.Printf("%s\n\n", err.Error())
+		// 	break
+		// }
 
-		err = wsConn.WriteMessage(1, ok) // TODO:  Check what first argument means
-		if err != nil {
-			fmt.Printf("write: %s\n", err)
-			break
-		}
+		// err = wsConn.WriteMessage(1, ok) // TODO:  Check what first argument means
+		// if err != nil {
+		// 	fmt.Printf("write: %s\n", err)
+		// 	break
+		// }
 
 		if DebugModeWebSocket() {
 			fmt.Printf("%v: %+v\n\n", game.Trace(""), req)
-			fmt.Printf("%v: %+v\n\n", game.Trace(""), ok)
+			// fmt.Printf("%v: %+v\n\n", game.Trace(""), ok)
 			fmt.Printf("wsConn.RemoteAddr(): %s\n", wsConn.RemoteAddr())
 		}
 	}

@@ -23,11 +23,15 @@ func Server() error {
 	http.HandleFunc("/player/create", CreatePlayer)
 	// PlayerList
 	http.HandleFunc("/playerlist", GetAvailablePlayersList)
+	http.HandleFunc("/playerlist/creategroup", GroupFourPlayers)
 	// Games
 	http.HandleFunc("/games", GetGames)
 	http.HandleFunc("/games/getbyid", GetGameByID)
+	// Groups
+	http.HandleFunc("/groups", GetGroups)
 	// Game
 	http.HandleFunc("/game/start", StartGame)
+	http.HandleFunc("/game/create", CreateGame)
 
 	// WEBSOCKET
 	http.HandleFunc("/ws/start", WSGame)
@@ -40,6 +44,8 @@ func Server() error {
 	if err := http.ListenAndServe(PORT, nil); err != nil {
 		fmt.Printf("ERROR serving on port %s: %+v.\n", PORT, err)
 	}
+
+	go VerifyAvailablePlayersList()
 
 	return nil
 }

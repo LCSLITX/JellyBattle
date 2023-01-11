@@ -19,6 +19,9 @@ func NewGame(g *Groups) (IGame, error) {
 		ID:    (*g)[0].ID, // TODO: Function to Generate ID. Think about game ID and Group ID
 		Board: b,
 		Group: (*g)[0],
+		Chat: make([]Message, 0),
+		Finish: make(chan bool),
+		Deaths: make(Players),
 	}
 
 	if DebugModeGame() {
@@ -49,12 +52,15 @@ func (game *Game) StartGame() bool {
 	go func() {
 		for {
 			select {
-			case <-Finish:
+			case <-game.Finish:
 				game.FinishGame()
 				ticker.Stop()
 			// case <-timer.C:
 			// 	game.FinishGame()
 			// 	ticker.Stop()
+			case msg := <-game.Broadcast:
+				game.Chat = append(game.Chat, msg)
+				game.Send <- true
 			case <-ticker.C:
 				game.RoundUp()
 			}
@@ -87,14 +93,10 @@ func (game *Game) GetWinners() Group {
 	return game.Group
 }
 
-// Think if death is gonna happed this way.
+// Think if death is gonna happen this way.
 // Dead function should re-order game.Group so the first player in group is the winner and the last is the loser.
 func (game *Game) Dead(p Player) {
-	// TODO: Create Logic to rank players.
-	game.Deaths++
-	if game.Deaths == 3 {
-		Finish <- true
-	}
+	game.Deaths[p.ID] = &p
 }
 
 // MovePlayers() moves players to its jump positions.
@@ -117,3 +119,4 @@ func (game *Game) DistributePlayers() {
 		i ++
 	}
 }
+

@@ -11,7 +11,7 @@ import (
 func GetAvailablePlayersList(w http.ResponseWriter, r *http.Request) {
 	fmt.Printf("[%s] %s%s\n", r.Method, r.Host, r.URL)
 
-	if r.Method != "GET" {
+	if r.Method != http.MethodGet {
 		http.Error(w, http.StatusText(http.StatusMethodNotAllowed), http.StatusMethodNotAllowed)
 		return
 	}
@@ -25,7 +25,7 @@ func GetAvailablePlayersList(w http.ResponseWriter, r *http.Request) {
 
 	for _, v := range pl {
 		var p PlayerResponse
-		p.Name, p.Rank = v.Name, v.Rank
+		p.ID, p.Name, p.Rank = v.ID, v.Name, v.Rank
 		list = append(list, p)
 	}
 
@@ -35,4 +35,17 @@ func GetAvailablePlayersList(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+}
+
+
+func GroupFourPlayers(w http.ResponseWriter, r *http.Request) {
+	fmt.Printf("[%s] %s%s\n", r.Method, r.Host, r.URL)
+
+	if r.Method != http.MethodGet {
+		http.Error(w, http.StatusText(http.StatusMethodNotAllowed), http.StatusMethodNotAllowed)
+		return
+	}
+
+	game.AVAILABLEPLAYERSLIST.GroupFourPlayers(game.GROUPS)
+	w.WriteHeader(http.StatusOK)
 }
