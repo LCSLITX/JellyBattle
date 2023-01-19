@@ -9,13 +9,14 @@ import (
 )
 
 func main() {
-	os.Setenv("DEBUG_MODE_STRUCTS", "true")
-	os.Setenv("DEBUG_MODE_GROUPS", "true")
-	os.Setenv("DEBUG_MODE_GAME", "true")
-	os.Setenv("DEBUG_MODE_PLAYER", "true")
-	os.Setenv("DEBUG_MODE_PLAYERLIST", "true")
-	os.Setenv("DEBUG_MODE_BOARD", "true")
-	os.Setenv("DEBUG_MODE_SPECIAL", "true")
+	// os.Setenv("DEBUG_MODE_STRUCTS", "true")
+	// os.Setenv("DEBUG_MODE_GROUPS", "true")
+	// os.Setenv("DEBUG_MODE_GAME", "true")
+	// os.Setenv("DEBUG_MODE_PLAYER", "true")
+	// os.Setenv("DEBUG_MODE_PLAYERLIST", "true")
+	// os.Setenv("DEBUG_MODE_BOARD", "true")
+	// os.Setenv("DEBUG_MODE_SPECIAL", "true")
+	// os.Setenv("DEBUG_MODE_WEBSOCKET", "true")
 
 	p1 := game.NewPlayer("Lucas")
 	game.AVAILABLEPLAYERSLIST.AddPlayer(p1.GetPlayer())
@@ -45,8 +46,6 @@ func main() {
 	gm := g.GetGame()
 
 	game.GAMES.AddGame(gm) 
-
-	fmt.Println(gm)
 	
 	api.Server()
 }
