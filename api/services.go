@@ -11,7 +11,9 @@ import (
 // TODO:  This should be called inside a go routine to check if Playerlist has four players and then creates a game.
 // An option to not run this inside an eternal loop, would execute this verification everytime a players is added to availableplayerlist.
 func VerifyAvailablePlayersList() {
+	
 	for {
+		fmt.Printf("Verifying PlayerList...\n")
 		if len(game.AVAILABLEPLAYERSLIST) >= 4 {
 			_, err := game.AVAILABLEPLAYERSLIST.GroupFourPlayers(game.GROUPS)
 			if err != nil {

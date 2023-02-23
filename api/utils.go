@@ -2,7 +2,6 @@ package api
 
 import (
 	"fmt"
-	"io/ioutil"
 	"net/http"
 	"os"
 )
@@ -16,7 +15,7 @@ func enableCors(w *http.ResponseWriter) {
 }
 
 func getHomePage() (s string) {
-	file, err := ioutil.ReadFile("page.html")
+	file, err := os.ReadFile("frontend/page.html")
 	if err != nil {
 		fmt.Println(err)
 	}

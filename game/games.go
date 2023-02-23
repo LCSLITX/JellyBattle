@@ -28,7 +28,7 @@ func (games *Games) GetGames() Games {
 func (games *Games) FindGame(id string) (g *Game, err error) {
 	g, ok := (*games)[id]
 	if !ok {
-		return &Game{}, fmt.Errorf("Game ID not found.")
+		return &Game{}, fmt.Errorf("game ID not found")
 	}
 	return
 }

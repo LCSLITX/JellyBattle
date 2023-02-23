@@ -29,7 +29,7 @@ func GetGames(w http.ResponseWriter, r *http.Request) {
 		gr.Deaths = v.Deaths
 		gr.Board = v.Board
 		gr.Group = v.Group
-		gr.Chat = v.Chat
+		// gr.Chat = v.Chat
 		grs[k] = gr
 	}
 
@@ -59,7 +59,6 @@ func GetGameByID(w http.ResponseWriter, r *http.Request) {
 			g.Deaths = v.Deaths
 			g.Board = v.Board
 			g.Group = v.Group
-			g.Chat = v.Chat
 			break
 		}
 	}

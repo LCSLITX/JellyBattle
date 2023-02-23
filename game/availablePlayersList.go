@@ -103,5 +103,5 @@ func (playerList *AvailablePlayersList) GroupFourPlayers(groups *Groups) (Group,
 		return g, nil
 	}
 
-	return Group{}, fmt.Errorf("Not enough players to play.")
+	return Group{}, fmt.Errorf("not enough players to play")
 }

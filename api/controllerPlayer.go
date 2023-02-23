@@ -28,14 +28,18 @@ func CreatePlayer(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if req.Name == "" {
+		http.Error(w, "empty name", http.StatusBadRequest)
+		return
+	}
 	// create a player, add it to playerList to wait for games and return its name and Rank (0).
 	p := game.NewPlayer(req.Name).GetPlayer()
 	game.AVAILABLEPLAYERSLIST.AddPlayer(p)
 
-	if DebugModeWebSocket() {
-		fmt.Printf("%v: %+v\n\n", game.Trace(""), req)
-		fmt.Printf("%v: %+v\n\n", game.Trace(""), w)
-	}
+	// if DebugModeWebSocket() {
+	// 	fmt.Printf("%v: %+v\n\n", game.Trace(""), req)
+	// 	fmt.Printf("%v: %+v\n\n", game.Trace(""), w)
+	// }
 
 	if err := json.NewEncoder(w).Encode(PlayerResponse{
 		Name: p.Name,

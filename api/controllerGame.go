@@ -32,7 +32,7 @@ func CreateGame(w http.ResponseWriter, r *http.Request) {
 	gr.Deaths = createdGame.Deaths
 	gr.Board = createdGame.Board
 	gr.Group = createdGame.Group
-	gr.Chat = createdGame.Chat
+	// gr.Chat = createdGame.Chat
 
 
 	game.GAMES.AddGame(createdGame)

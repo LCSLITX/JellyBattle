@@ -98,7 +98,7 @@ func (board *Board) countEmptyButtons() uint64 {
 	q := 0
 	for r := uint8(0); r < rows; r++ {
 		for c := uint8(0); c < columns; c++ {
-			if board.Rows[r][c].Fulfilled == false {
+			if !board.Rows[r][c].Fulfilled {
 				q++
 			}
 		}

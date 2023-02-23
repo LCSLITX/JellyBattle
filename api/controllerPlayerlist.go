@@ -19,7 +19,7 @@ func GetAvailablePlayersList(w http.ResponseWriter, r *http.Request) {
 	// set response headers to json
 	w.Header().Set("Content-Type", "application/json")
 
-	pl := game.AVAILABLEPLAYERSLIST.GetPlayerList()
+	pl := game.AVAILABLEPLAYERSLIST
 
 	list := make([]PlayerResponse, 0)
 

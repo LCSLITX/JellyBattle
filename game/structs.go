@@ -1,5 +1,11 @@
 package game
 
+import (
+	"time"
+
+	"github.com/gorilla/websocket"
+)
+
 // How to optimise struct memory allocation in golang:
 // https://medium.com/techverito/golang-struct-size-and-memory-optimisation-b46b124f008d
 // https://stackoverflow.com/questions/2113751/sizeof-struct-in-go
@@ -36,16 +42,21 @@ type Game struct { // Struct Game refers to a game, composed by a group of playe
 	Deaths      Players
 	Board       Board
 	Group       Group
-	Finish      chan bool // outside Game because its not compatible with enconding/json.NewDecoder().Decode().
-	Chat        []Message // Not sure yet
-	Broadcast   chan Message
-	Send        chan bool
-	// Timer    time.Duration // Not sure yet
+	Finish      chan bool `json:"-"`// outside Game because its not compatible with enconding/json.NewDecoder().Decode().
+	// Chat        []Message // Not sure yet
+	// Broadcast   chan Message
+	// Send        chan bool
+	Timer time.Duration // Not sure yet
+
+	Connections map[*websocket.Conn]*Player
+	Broadcast   chan []byte
+	Register    chan *websocket.Conn
+	Unregister  chan *websocket.Conn
 }
 
 type Message struct {
 	PlayerID string
-	Msg      string
+	Msg      []byte
 }
 
 type Games map[string]*Game
@@ -69,9 +80,11 @@ type Player struct {
 	Position     Position
 	JumpPosition Position
 	Buffs        SpecialCharges
+	Conn         *websocket.Conn
+	Game         *Game
 }
 
-// TODO:  Think about the possibility of changing array for maps. Maybe it'll be better.
+// TODO:  Think about the possibility of changing array for map. Maybe it'll be better.
 type Players map[string]*Player // Supposed to be used for a specific game, players will leave PlayerList to form a Players group to join game.
 
 // TODO:  Think about the possibility of changing array for maps. Maybe it'll be better.
@@ -106,3 +119,13 @@ type SpecialCharge struct {
 type SpecialCharges []SpecialCharge
 
 type Specials []Special
+
+
+// API
+type GameRequest struct {
+	GID          string   `json:"gid"`
+	PID          string   `json:"pid"`
+	Name         string   `json:"name"`
+	JumpPosition Position `json:"jumpPosition"`
+	Message      Message  `json:"message"`
+}

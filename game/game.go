@@ -3,14 +3,16 @@ package game
 import (
 	"fmt"
 	"time"
+
+	"github.com/gorilla/websocket"
 )
 
 // NewGame() constructor returns a game instance.
 func NewGame(g *Groups) (IGame, error) {
 	if len(*g) == 0 {
-		return nil, fmt.Errorf("There's no group to create a game.")
+		return nil, fmt.Errorf("there's no group to create a game")
 	} else if len((*g)[0].Players) == 0 {
-		return nil, fmt.Errorf("Cannot use an empty group.")
+		return nil, fmt.Errorf("cannot use an empty group")
 	}
 
 	b := NewBoard(DEFAULT_ROWS, DEFAULT_COLUMNS, DEFAULT_PLAYERS_NUMBER).GetBoard()
@@ -19,9 +21,14 @@ func NewGame(g *Groups) (IGame, error) {
 		ID:    (*g)[0].ID, // TODO: Function to Generate ID. Think about game ID and Group ID
 		Board: b,
 		Group: (*g)[0],
-		Chat: make([]Message, 0),
+		// Chat: make([]Message, 0),
 		Finish: make(chan bool),
 		Deaths: make(Players),
+
+		Connections: make(map[*websocket.Conn]*Player),
+		Broadcast:   make(chan []byte),
+		Register:    make(chan *websocket.Conn),
+		Unregister:  make(chan *websocket.Conn),
 	}
 
 	if DebugModeGame() {
@@ -58,9 +65,9 @@ func (game *Game) StartGame() bool {
 			// case <-timer.C:
 			// 	game.FinishGame()
 			// 	ticker.Stop()
-			case msg := <-game.Broadcast:
-				game.Chat = append(game.Chat, msg)
-				game.Send <- true
+			// case msg := <-game.Broadcast:
+				// game.Chat = append(game.Chat, msg)
+				// game.Send <- true
 			case <-ticker.C:
 				game.RoundUp()
 			}
@@ -116,7 +123,61 @@ func (game *Game) DistributePlayers() {
 	i := 0
 	for k := range game.Group.Players {
 		game.Group.Players[k].Position = b[i]
-		i ++
+		i++
 	}
 }
 
+
+func (game *Game) handleConnections() {
+	for {
+			select {
+			case conn := <-game.Register:
+					game.Connections[conn] = nil
+			case conn := <-game.Unregister:
+					if _, ok := game.Connections[conn]; ok {
+							delete(game.Connections, conn)
+							conn.Close()
+					}
+			}
+	}
+}
+
+
+func (g *Game) handleMessages() {
+	for {
+		for conn := range g.Connections {
+			var req GameRequest
+			err := conn.ReadJSON(&req)
+			if err != nil {
+				fmt.Printf("%s\n\n", err.Error())
+				break
+			}
+			
+			g, err := GAMES.FindGame(req.GID)
+			if err != nil {
+				fmt.Printf("%s\n\n", err.Error())
+				break
+			}
+
+			if len(req.Message.Msg) != 0 {
+				// message flow
+				fmt.Printf("Received MESSAGE: %+v\n", req.Message)
+	
+				g.Broadcast <- req.Message.Msg
+
+				msgType, msg, err := conn.ReadMessage()
+				if err != nil {
+						g.Unregister <- conn
+						break
+				}
+				fmt.Println(msgType)
+				fmt.Println(msg)
+				
+			} else {
+					// player movement flow
+					fmt.Printf("Received POSITION: %+v\n", req.JumpPosition)
+					g.Group.Players[req.Name].Position = req.JumpPosition
+			}
+		}
+	}
+}

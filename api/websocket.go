@@ -37,7 +37,7 @@ func check(r *http.Request) bool {
 func WSGame(w http.ResponseWriter, r *http.Request) {
 	wsConn, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
-		fmt.Printf(err.Error())
+		fmt.Print(err.Error())
 	}
 
 	defer wsConn.Close()
@@ -50,44 +50,10 @@ func WSGame(w http.ResponseWriter, r *http.Request) {
 			break
 		}
 
-		if req.Message.Msg != "" {
-			// message flow
-			fmt.Printf("Received MESSAGE: %+v\n", req.Message)
-			g, err := game.GAMES.FindGame(req.GID)
-			if err != nil {
-				fmt.Printf("%s\n\n", err.Error())
-				break
-			}
-
-			g.Broadcast <- req.Message
-
-			select {
-			case b := <-g.Send:
-				if b {
-					wsConn.WriteJSON(g.Chat)
-					g.Send <- false
-				}
-			}
-
-		}
-
 		if req.JumpPosition.Row != 0 && req.JumpPosition.Column != 0 {
 			// player movement flow
 			fmt.Printf("Received POSITION: %+v\n", req.JumpPosition)
 		}
-
-		// // Response
-		// ok, err := json.Marshal("ok")
-		// if err != nil {
-		// 	fmt.Printf("%s\n\n", err.Error())
-		// 	break
-		// }
-
-		// err = wsConn.WriteMessage(1, ok) // TODO:  Check what first argument means
-		// if err != nil {
-		// 	fmt.Printf("write: %s\n", err)
-		// 	break
-		// }
 
 		if DebugModeWebSocket() {
 			fmt.Printf("%v: %+v\n\n", game.Trace(""), req)
