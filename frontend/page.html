@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="/frontend/page.css">
+  <title>JellyBattle</title>
+</head>
+<body>
+  <input type="text" id="playerName" placeholder="Player Name" />
+  <button id="nameButton" onclick="createPlayer()">Create Player</button>
+  <button onclick="PlayerList()">PlayerList</button>
+  <div>
+    <table style="color:white;">
+      <thead>
+        <th>Players</th>
+      </thead>
+      <tbody id="playerlist">
+      </tbody>
+    </table>
+  </div>
+  <script src="/frontend/script.js"></script>
+</body>
+</html>

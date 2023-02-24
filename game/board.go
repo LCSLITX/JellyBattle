@@ -4,7 +4,6 @@ import (
 	"fmt"
 )
 
-
 // NewBoard() constructor returns an empty Board instance.
 func NewBoard(rows, columns, players uint8) IBoard {
 	// To know more about Object Oriented Programming (OOP) in Go and how to add methods to a "class":
@@ -20,7 +19,7 @@ func NewBoard(rows, columns, players uint8) IBoard {
 // GetBoard() returns Board object.
 func (board *Board) GetBoard() Board {
 	if DebugModeBoard() {
-		fmt.Printf("%v: %+v\n\n", Trace(), *board)
+		fmt.Printf("%v: %+v\n\n", Trace(""), *board)
 	}
 	return *board
 }
@@ -40,7 +39,7 @@ func (board *Board) GenerateBoard(rows, columns uint8) {
 	}
 	board.NumberOfButtons = q
 	if DebugModeBoard() {
-		fmt.Printf("%v: %+v\n\n", Trace(), board)
+		fmt.Printf("%v: %+v\n\n", Trace(""), board)
 	}
 }
 
@@ -54,7 +53,7 @@ func (board *Board) GeneratePreviewRow() {
 		row = append(row, b)                    // Add new button to created row of buttons
 	}
 	if DebugModeBoard() {
-		fmt.Printf("%v: %+v\n\n", Trace(), row)
+		fmt.Printf("%v: %+v\n\n", Trace(""), row)
 	}
 	board.PreviewRow = row
 }
@@ -62,7 +61,7 @@ func (board *Board) GeneratePreviewRow() {
 // GetPreviewRow() returns current preview row.
 func (board *Board) GetPreviewRow() Row {
 	if DebugModeBoard() {
-		fmt.Printf("%v: %+v\n\n", Trace(), board.PreviewRow)
+		fmt.Printf("%v: %+v\n\n", Trace(""), board.PreviewRow)
 	}
 	return board.PreviewRow
 }
@@ -81,14 +80,14 @@ func (board *Board) RoundRows() {
 		}
 	}
 	if DebugModeBoard() {
-		fmt.Printf("%v: %+v\n\n", Trace(), board.Rows)
+		fmt.Printf("%v: %+v\n\n", Trace(""), board.Rows)
 	}
 }
 
 // CountButtons() return the quantity of buttons in the board grid.
 func (board *Board) countButtons() uint64 {
 	if DebugModeBoard() {
-		fmt.Printf("%v: %+v\n\n", Trace(), board.NumberOfButtons)
+		fmt.Printf("%v: %+v\n\n", Trace(""), board.NumberOfButtons)
 	}
 	return board.NumberOfButtons
 }
@@ -99,13 +98,13 @@ func (board *Board) countEmptyButtons() uint64 {
 	q := 0
 	for r := uint8(0); r < rows; r++ {
 		for c := uint8(0); c < columns; c++ {
-			if board.Rows[r][c].Fulfilled == false {
+			if !board.Rows[r][c].Fulfilled {
 				q++
 			}
 		}
 	}
 	if DebugModeBoard() {
-		fmt.Printf("%v: %+v\n\n", Trace(), uint(q))
+		fmt.Printf("%v: %+v\n\n", Trace(""), uint(q))
 	}
 	return uint64(q)
 }

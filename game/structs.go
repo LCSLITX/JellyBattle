@@ -1,5 +1,16 @@
 package game
 
+import (
+	"time"
+
+	"github.com/gorilla/websocket"
+)
+
+// How to optimise struct memory allocation in golang:
+// https://medium.com/techverito/golang-struct-size-and-memory-optimisation-b46b124f008d
+// https://stackoverflow.com/questions/2113751/sizeof-struct-in-go
+// https://stackoverflow.com/questions/73211746/does-go-use-something-like-space-padding-for-structs
+
 type Board struct { // Struct Board refers to the board grid.
 	RowNumber          uint8  // Quantity of rows.
 	ColumnNumber       uint8  // Quantity of columns.
@@ -23,48 +34,66 @@ type Dummy struct { // TODO: Decide future of Dummies
 	Rank uint8
 }
 
-var Finish chan bool // outside Game because its not compatible with enconding/json.NewDecoder().Decode().
-
 type Game struct { // Struct Game refers to a game, composed by a group of players and a board.
-	ID       string
-	Board    Board
-	Group    Group
-	Started  bool // Not sure yet
-	Finished bool // Not sure yet
-	Deaths   uint8
-	Chat     [][]byte // Not sure yet
-	// Timer    time.Duration // Not sure yet
+	Started     bool // Not sure yet
+	Finished    bool // Not sure yet
+	GID         string
+	RoundNumber uint16
+	Deaths      Players
+	Board       Board
+	Group       Group
+	Finish      chan bool `json:"-"` // outside Game because its not compatible with enconding/json.NewDecoder().Decode().
+	// Chat        []Message // Not sure yet
+	// Broadcast   chan Message
+	// Send        chan bool
+	Timer time.Duration // Not sure yet
+
+	Connections map[*websocket.Conn]*Player `json:"-"`
+	Broadcast   chan []byte                 `json:"-"`
+	Register    chan *websocket.Conn        `json:"-"`
+	Unregister  chan *websocket.Conn        `json:"-"`
 }
 
-type Games []Game
+type Message struct {
+	PID string `json:"pid"`
+	Msg []byte `json:"msg"`
+}
+
+type Games map[string]*Game
 
 type Group struct {
-	ID      string
+	GID     string
 	Players Players
 }
 
 type Groups []Group
 
 type Player struct {
-	ID           string
-	Name         string
-	Rank         uint8
-	Life         uint8
-	Experience   uint64
-	GamesPlayed  uint
-	JumpDistance uint8
-	Position     Position
-	JumpPosition Position
-	Buffs        SpecialCharges
+	PID             string // PlayerID
+	Name            string
+	Rank            uint8
+	Life            uint8
+	JumpDistance    uint8
+	Connected       bool // To be used on websocket connection
+	GamesPlayed     uint
+	Experience      uint64
+	CurrentPosition Position
+	JumpToPosition  Position
+	Buffs           SpecialCharges
+	Conn            *websocket.Conn
+	Game            *Game
+	Send            chan []byte `json:"-"`
 }
 
-type Players [4]Player // Supposed to be used for a specific game, players will leave PlayerList to form a Players group to join game.
+// TODO:  Think about the possibility of changing array for map. Maybe it'll be better.
+type Players map[string]*Player // Supposed to be used for a specific game, players will leave PlayerList to form a Players group to join game.
 
-type AvailablePlayersList []Player // Supposed to have all the players available to play a game.
+// TODO:  Think about the possibility of changing array for maps. Maybe it'll be better.
+type AvailablePlayersList map[string]*Player // Supposed to have all the players available to play a game.
 
 type Position struct {
-	Row    uint8 // x
-	Column uint8 // y
+	Row    uint8 `json:"row"` // x
+	Column uint8 `json:"col"` // y
 }
 
 type Positions []Position
@@ -91,3 +120,12 @@ type SpecialCharge struct {
 type SpecialCharges []SpecialCharge
 
 type Specials []Special
+
+// API
+type GameRequest struct {
+	GID          string   `json:"gid"`
+	PID          string   `json:"pid"`
+	Name         string   `json:"name"`
+	JumpPosition Position `json:"jumpPosition"`
+	Message      Message  `json:"message"`
+}

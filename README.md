@@ -21,3 +21,6 @@ Priorities:
   -[ ] Remove commentaries in main.go file. Those validations should've made with unit or integration tests.
 
   -[ ] Think about using websocket for searching for a game. Player connects to a list of available players and gets removed if it disconnects. It is a possible better approach than the current one.
+
+  -[ ] Optimise structs
+  -[ ] Analyze WS/Game websocket endpoint and debug chat logic.

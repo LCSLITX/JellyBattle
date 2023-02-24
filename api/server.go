@@ -4,70 +4,49 @@ import (
 	"fmt"
 	"net/http"
 	"os"
-	"time"
-
-	"github.com/lucassauro/JellyBattle/game"
 )
 
-func init() {
-	os.Setenv("PORT", ":3333")
-}
-
 func Server() error {
-	// REST API
-	http.HandleFunc("/", GetRoot)
-	http.HandleFunc("/ping", GetPing)
-	// Player
-	http.HandleFunc("/player/create", CreatePlayer)
-	// PlayerList
-	http.HandleFunc("/playerlist", GetPlayerList)
-	// Games
-	http.HandleFunc("/games", GetGames)
-	http.HandleFunc("/games/getbyid", GetGameByID)
-	//Game
-	http.HandleFunc("/game/start", StartGame)
+	// Check it out to know more: https://forum.golangbridge.org/t/cant-get-a-background-image-to-display-using-go-webserver/6940
+	// Create a file server which serves static files out of the "./frontend" directory.
+	// Use the http.Handle() function to register the file server as the handler for all URL paths that start with "/frontend/". For matching
+	// paths, we strip the "/frontend" prefix before the request reaches the file server.
+	fileServer := http.FileServer(http.Dir(DOT_FRONTEND))
+	http.Handle(_FRONTEND_, http.StripPrefix(_FRONTEND, fileServer))
 
+	// DISABLED Player
+	// http.HandleFunc(_PLAYER_CREATE, CreatePlayer)
+	// PlayerList
+	http.HandleFunc(_PLAYERLIST, GetAvailablePlayersList)
+	http.HandleFunc(_PLAYERLIST_CREATEGROUP, GroupFourPlayers)
+	// Games
+	http.HandleFunc(_GAMES, GetGames)
+	http.HandleFunc(_GAMES_GETBYID, GetGameByID)
+	// Groups
+	http.HandleFunc(_GROUPS, GetGroups)
+	// Game
+	http.HandleFunc(_GAME_START, StartGame)
+	http.HandleFunc(_GAME_CREATE, CreateGame)
 
 	// WEBSOCKET
+	http.HandleFunc(_WS_START_GID, WSGame)
+	http.HandleFunc(_WS_PLAYERLIST, WSPlayerList)
+	http.HandleFunc(_WS_PLAYER_CREATE, WSPlayerCreate)
 
-	
+	// REST API
+	http.HandleFunc(_ROOT, GetHome)
+	http.HandleFunc(_PING, GetPing)
+	http.HandleFunc(_TEST, Test)
+
+	PORT := os.Getenv("PORT")
+
+	go VerifyAvailablePlayersList()
+
 	// Server
-	fmt.Printf("Server running on localhost%v...\n", PORT)
-
-
-	// TODO: Take this horrible thing out of here.
-	// This go routine checks if Playerlist has four players and then creates a game.
-	go func() {
-		for {
-			if len(game.PLAYERLIST) >= 4 {
-
-				_, err := game.PLAYERLIST.GroupFourPlayers(game.GROUPS)
-				if err != nil {
-					fmt.Println(fmt.Errorf(err.Error())) // horrible
-					os.Exit(1)
-				}
-				fmt.Printf("Created a group.\n")
-
-				createdGame, err := game.NewGame(game.GROUPS)
-				if err != nil {
-					fmt.Println(fmt.Errorf(err.Error())) // horrible
-					os.Exit(1)
-				}
-
-				fmt.Printf("Created a game: %+v.\n\n", createdGame.GetGame())
-				game.GAMES.AddGame(createdGame.GetGame())
-
-				fmt.Printf("Added a game to games: %+v.\n", game.GAMES.GetGames())
-
-			} else {
-				fmt.Printf("PlayerList contains %v players.\n", len(game.PLAYERLIST))
-			}
-			time.Sleep(DEFAULT_INTERVAL)
-		}
-	}()
-
+	fmt.Printf("Server starting on localhost%s...\n", PORT)
 	if err := http.ListenAndServe(PORT, nil); err != nil {
-		return err
+		fmt.Printf("ERROR serving on port %s: %+v.\n", PORT, err)
 	}
+
 	return nil
 }

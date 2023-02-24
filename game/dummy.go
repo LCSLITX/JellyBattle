@@ -8,4 +8,3 @@ func NewDummy(name string) IDummy {
 		Rank: uint8(0),
 	}
 }
-

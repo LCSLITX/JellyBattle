@@ -2,16 +2,27 @@ package api
 
 import (
 	"fmt"
+	"html/template"
 	"io"
 	"net/http"
 )
 
-func GetRoot(w http.ResponseWriter, r *http.Request) {
+func GetHome(w http.ResponseWriter, r *http.Request) {
 	fmt.Printf("[%s] %s%s\n", r.Method, r.Host, r.URL)
-	io.WriteString(w, "JellyBattle Site!\n")
+
+	homeTemplate := template.Must(template.New("Home").Parse(getHomePage()))
+
+	homeTemplate.Execute(w, r.Host)
 }
 
 func GetPing(w http.ResponseWriter, r *http.Request) {
 	fmt.Printf("[%s] %s%s\n", r.Method, r.Host, r.URL)
 	io.WriteString(w, "Pong!\n")
 }
+
+
+func Test(w http.ResponseWriter, r *http.Request) {
+	fmt.Printf("[%s] %s%s\n", r.Method, r.Host, r.URL)
+	io.WriteString(w, r.URL.Path)
+}
+

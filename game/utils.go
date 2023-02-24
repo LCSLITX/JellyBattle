@@ -1,12 +1,15 @@
 package game
 
 import (
+	"crypto/md5"
 	"fmt"
 	"math/rand"
 	"os"
 	"runtime"
 	"strings"
 	"time"
+
+	"github.com/google/uuid"
 )
 
 // RandomNumber returns a random uint8 between 0 and n.
@@ -48,27 +51,45 @@ func DebugModeSpecial() bool {
 	return os.Getenv("DEBUG_MODE_SPECIAL") == "true"
 }
 
-// Trace() used for debug purpose, to show file, line and function on printing information.
-func Trace() string {
+func DebugModeStructs() bool {
+	return os.Getenv("DEBUG_MODE_STRUCTS") == "true"
+}
+
+// Trace("") used for debug purpose, to show file, line and function on printing information.
+// if receives "function" return only the function name.
+// Otherwise returns file, line and function.
+func Trace(object string) string {
 	pc := make([]uintptr, 15)
 	n := runtime.Callers(2, pc)
 	frames := runtime.CallersFrames(pc[:n])
 	frame, _ := frames.Next()
 	file := strings.Split(frame.File, "/")
 	function := strings.Split(frame.Function, "/")
-	return fmt.Sprintf("[%s:%d - %s]", file[7], frame.Line, function[3])
+	if object == "function" {
+		return function[len(function)-1]
+	} else {
+		return fmt.Sprintf("[%s:%d - %s]", file[len(file)-1], frame.Line, function[len(function)-1])
+	}
 }
 
 // TODO: Implement GenerateID
 // GenerateID creates a random ID. Well, not yet.
-func GenerateID() string {
-	return "999999"
+func GenerateID() (string, error) {
+	id, err := uuid.New().MarshalBinary()
+	if err != nil {
+		return "", err
+	}
+	sum := md5.Sum(id)
+
+	s := fmt.Sprintf("%x", sum)
+
+	return s, nil
 }
 
 // VerifyDuplicateID returns true if ID is already used.
 func VerifyDuplicateID(g *Groups, id string) bool {
-	for _, v := range (*g) {
-		if v.ID == id {
+	for _, v := range *g {
+		if v.GID == id {
 			return true
 		}
 	}

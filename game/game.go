@@ -3,26 +3,40 @@ package game
 import (
 	"fmt"
 	"time"
+
+	"github.com/gorilla/websocket"
 )
 
 // NewGame() constructor returns a game instance.
 func NewGame(g *Groups) (IGame, error) {
 	if len(*g) == 0 {
-		return nil, fmt.Errorf("There's no group to create a game.")
+		return nil, fmt.Errorf("there's no group to create a game")
 	} else if len((*g)[0].Players) == 0 {
-		return nil, fmt.Errorf("Cannot use an empty group.")
+		return nil, fmt.Errorf("cannot use an empty group")
 	}
 
 	b := NewBoard(DEFAULT_ROWS, DEFAULT_COLUMNS, DEFAULT_PLAYERS_NUMBER).GetBoard()
 
 	game := &Game{
-		ID:    (*g)[0].ID, // TODO: Function to Generate ID. Think about game ID and Group ID
+		GID:   (*g)[0].GID,
 		Board: b,
 		Group: (*g)[0],
+		// Chat: make([]Message, 0),
+		Finish: make(chan bool),
+		Deaths: make(Players),
+
+		Connections: make(map[*websocket.Conn]*Player),
+		Broadcast:   make(chan []byte),
+		Register:    make(chan *websocket.Conn),
+		Unregister:  make(chan *websocket.Conn),
+	}
+
+	for _, v := range g.GetGroups().GetFirstGroup().Players {
+		game.Connections[v.Conn] = v
 	}
 
 	if DebugModeGame() {
-		fmt.Printf("%v: %+v\n\n", Trace(), game)
+		fmt.Printf("%v: %+v\n\n", Trace(""), game)
 	}
 
 	return game, nil
@@ -36,7 +50,7 @@ func (game *Game) GetGame() Game {
 // StartGame() set variable Started to true and proceeds with a few specific procedures proper to initial moment as distribute Players to its starting positions, generate a few rows, start a ticker to count round time etc.
 func (game *Game) StartGame() bool {
 	game.Started = true
-	
+
 	game.DistributePlayers()
 	game.Board.GeneratePreviewRow()
 	game.Board.RoundRows()
@@ -49,12 +63,15 @@ func (game *Game) StartGame() bool {
 	go func() {
 		for {
 			select {
-			case <-Finish:
+			case <-game.Finish:
 				game.FinishGame()
 				ticker.Stop()
 			// case <-timer.C:
 			// 	game.FinishGame()
 			// 	ticker.Stop()
+			// case msg := <-game.Broadcast:
+			// game.Chat = append(game.Chat, msg)
+			// game.Send <- true
 			case <-ticker.C:
 				game.RoundUp()
 			}
@@ -62,13 +79,13 @@ func (game *Game) StartGame() bool {
 	}()
 
 	if DebugModeGame() {
-		fmt.Printf("%v: %+v\n\n", Trace(), game)
+		fmt.Printf("%v: %+v\n\n", Trace(""), game)
 	}
 
 	return game.Started
 }
 
-// RoundUp() will execute the functions responsible for in-between round actions. 
+// RoundUp() will execute the functions responsible for in-between round actions.
 func (game *Game) RoundUp() {
 	game.MovePlayers()
 	game.Board.GeneratePreviewRow()
@@ -87,14 +104,10 @@ func (game *Game) GetWinners() Group {
 	return game.Group
 }
 
-// Think if death is gonna happed this way.
+// Think if death is gonna happen this way.
 // Dead function should re-order game.Group so the first player in group is the winner and the last is the loser.
 func (game *Game) Dead(p Player) {
-	// TODO: Create Logic to rank players.
-	game.Deaths++
-	if game.Deaths == 3 {
-		Finish <- true
-	}
+	game.Deaths[p.PID] = &p
 }
 
 // MovePlayers() moves players to its jump positions.
@@ -102,7 +115,7 @@ func (game *Game) MovePlayers() {
 	for _, p := range game.Group.Players {
 		p.JumpTo()
 		if DebugModeBoard() {
-			fmt.Printf("%v: %+v\n\n", Trace(), p)
+			fmt.Printf("%v: %+v\n\n", Trace(""), p)
 		}
 	}
 }
@@ -111,7 +124,9 @@ func (game *Game) MovePlayers() {
 func (game *Game) DistributePlayers() {
 	game.Board.GetStartPosition()
 	b := game.Board.StartPositions
+	i := 0
 	for k := range game.Group.Players {
-		game.Group.Players[k].Position = b[k]
+		game.Group.Players[k].CurrentPosition = b[i]
+		i++
 	}
 }

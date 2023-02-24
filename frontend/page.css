@@ -1,0 +1,5 @@
+html {
+  background-color: #181818;
+  background: url('/frontend/assets/image.png') no-repeat center fixed;     
+  background-size: cover;
+}
