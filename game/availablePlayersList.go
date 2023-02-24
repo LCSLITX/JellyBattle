@@ -28,7 +28,7 @@ func (playerList *AvailablePlayersList) GetPlayerList() AvailablePlayersList {
 func (playerList *AvailablePlayersList) AddPlayer(p Player) {
 	// In case of doubt about next line: https://stackoverflow.com/questions/74915781/go-appending-elements-to-slice-of-struct
 	// *playerList = append(*playerList, &p)
-	(*playerList)[p.ID] = &p
+	(*playerList)[p.PID] = &p
 
 	if DebugModePlayerList() {
 		fmt.Printf("%v: %+v\n\n", Trace(""), *playerList)
@@ -40,7 +40,7 @@ func (playerList *AvailablePlayersList) RemovePlayer(p Player) {
 	if len(playerList.GetPlayerList()) == 0 {
 		return
 	}
-	delete(*playerList, p.ID)
+	delete(*playerList, p.PID)
 
 	// i := playerList.FindPlayer(p)
 	// In case of doubt about next lines:
@@ -85,7 +85,7 @@ func (playerList *AvailablePlayersList) GroupFourPlayers(groups *Groups) (Group,
 		}
 
 		g := Group{
-			ID:     id, // TODO:  Function to generate ID.
+			GID:     id, // TODO:  Function to generate ID.
 			Players: players,
 		}
 

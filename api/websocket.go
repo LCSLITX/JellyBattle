@@ -37,36 +37,44 @@ func check(r *http.Request) bool {
 func WSGame(w http.ResponseWriter, r *http.Request) {
 	wsConn, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
-		fmt.Print(err.Error())
+		fmt.Println(err.Error())
 	}
-
 	defer wsConn.Close()
 
-	for {
-		var req GameRequest
-		err = wsConn.ReadJSON(&req)
-		if err != nil {
-			fmt.Printf("%s\n\n", err.Error())
-			break
-		}
+	gid := r.URL.Path[len(_WS_START_GID):]
 
-		if req.JumpPosition.Row != 0 && req.JumpPosition.Column != 0 {
-			// player movement flow
-			fmt.Printf("Received POSITION: %+v\n", req.JumpPosition)
+	g, err := game.GAMES.FindGame(gid)
+	if err != nil {
+		wsConn.WriteMessage(1, []byte("game not found"))
+		if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway, websocket.CloseAbnormalClosure) {
+			fmt.Printf("error: %v\n", err)
 		}
-
-		if DebugModeWebSocket() {
-			fmt.Printf("%v: %+v\n\n", game.Trace(""), req)
-			// fmt.Printf("%v: %+v\n\n", game.Trace(""), ok)
-			fmt.Printf("wsConn.RemoteAddr(): %s\n", wsConn.RemoteAddr())
-		}
+		wsConn.Close()
+		return
 	}
+
+	wsConn.WriteMessage(1, []byte("game found"))
+
+	go g.HandleConnections()
+
+	WSGameHandle(g, wsConn, w, r)
+
+	fmt.Printf("rodou 2\n")
+}
+
+func WSGameHandle(g *game.Game, wsConn *websocket.Conn, w http.ResponseWriter, r *http.Request) {
+	if DebugModeWebSocket() {
+		fmt.Printf("%v: %+v\n\n", game.Trace(""), g)
+		fmt.Printf("wsConn.RemoteAddr(): %s\n\n", wsConn.RemoteAddr())
+	}
+
+	go g.HandleWSEvents()
 }
 
 func WSPlayerList(w http.ResponseWriter, r *http.Request) {
 	wsConn, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
-		fmt.Printf(err.Error())
+		fmt.Println(err.Error())
 	}
 
 	defer wsConn.Close()
@@ -76,4 +84,28 @@ func WSPlayerList(w http.ResponseWriter, r *http.Request) {
 			fmt.Printf("wsConn.RemoteAddr(): %s\n", wsConn.RemoteAddr())
 		}
 	}
+}
+
+func WSPlayerCreate(w http.ResponseWriter, r *http.Request) {
+	wsConn, err := upgrader.Upgrade(w, r, nil)
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+
+	defer wsConn.Close()
+
+	var req PlayerRequest
+	err = wsConn.ReadJSON(&req)
+	if err != nil || req.Name == "" {
+		wsConn.WriteMessage(1, []byte("error creating player"))
+		fmt.Printf("error: %v\n", err)
+		wsConn.Close()
+		return
+	}
+
+	p := game.NewPlayer(req.Name, wsConn).GetPlayer()
+	game.AVAILABLEPLAYERSLIST.AddPlayer(p)
+	fmt.Printf("PLAYER: %+v", p)
+	str := fmt.Sprintf("Player %v created. Rank: %v.", p.Name, p.Rank)
+	wsConn.WriteMessage(1, []byte(str))
 }

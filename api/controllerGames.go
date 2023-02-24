@@ -25,7 +25,7 @@ func GetGames(w http.ResponseWriter, r *http.Request) {
 		gr := GameResponse{}
 		gr.Started = v.Started
 		gr.Finished = v.Finished
-		gr.ID = v.ID
+		gr.ID = v.GID
 		gr.Deaths = v.Deaths
 		gr.Board = v.Board
 		gr.Group = v.Group
@@ -52,10 +52,10 @@ func GetGameByID(w http.ResponseWriter, r *http.Request) {
 
 	var g GameResponse
 	for _, v := range game.GAMES.GetGames() {
-		if v.ID == id {
+		if v.GID == id {
 			g.Started = v.Started
 			g.Finished = v.Finished
-			g.ID = v.ID
+			g.ID = v.GID
 			g.Deaths = v.Deaths
 			g.Board = v.Board
 			g.Group = v.Group

@@ -28,12 +28,11 @@ func CreateGame(w http.ResponseWriter, r *http.Request) {
 	gr := GameResponse{}
 	gr.Started = createdGame.Started
 	gr.Finished = createdGame.Finished
-	gr.ID = createdGame.ID
+	gr.ID = createdGame.GID
 	gr.Deaths = createdGame.Deaths
 	gr.Board = createdGame.Board
 	gr.Group = createdGame.Group
 	// gr.Chat = createdGame.Chat
-
 
 	game.GAMES.AddGame(createdGame)
 
@@ -55,13 +54,13 @@ func StartGame(w http.ResponseWriter, r *http.Request) {
 
 	var g *game.Game
 	for _, v := range game.GAMES.GetGames() {
-		if v.ID == id {
+		if v.GID == id {
 			g = v
 			break
 		}
 	}
 
-	if g.ID == "" {
+	if g.GID == "" {
 		http.Error(w, http.StatusText(http.StatusNotFound), http.StatusNotFound)
 		return
 	}

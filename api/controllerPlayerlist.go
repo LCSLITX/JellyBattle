@@ -25,7 +25,7 @@ func GetAvailablePlayersList(w http.ResponseWriter, r *http.Request) {
 
 	for _, v := range pl {
 		var p PlayerResponse
-		p.ID, p.Name, p.Rank = v.ID, v.Name, v.Rank
+		p.ID, p.Name, p.Rank = v.PID, v.Name, v.Rank
 		list = append(list, p)
 	}
 
@@ -36,7 +36,6 @@ func GetAvailablePlayersList(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 }
-
 
 func GroupFourPlayers(w http.ResponseWriter, r *http.Request) {
 	fmt.Printf("[%s] %s%s\n", r.Method, r.Host, r.URL)

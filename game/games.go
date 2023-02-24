@@ -16,11 +16,15 @@ func NewGames() IGames {
 // AddGame() adds a game to games map instance.
 func (games *Games) AddGame(g Game) {
 	// *games = append(*games, g)
-	(*games)[g.ID] = &g
+	(*games)[g.GID] = &g
 }
 
 // GetGames() returns games map.
 func (games *Games) GetGames() Games {
+	if DebugModeGame() {
+		fmt.Printf("%v: %+v\n\n", Trace(""), *games)
+	}
+
 	return *games
 }
 
@@ -28,8 +32,10 @@ func (games *Games) GetGames() Games {
 func (games *Games) FindGame(id string) (g *Game, err error) {
 	g, ok := (*games)[id]
 	if !ok {
-		return &Game{}, fmt.Errorf("game ID not found")
+		return &Game{}, fmt.Errorf("game ID %v not found", id)
+	}
+	if DebugModeGame() {
+		fmt.Printf("%v: %+v\n\n", Trace(""), g)
 	}
 	return
 }
-

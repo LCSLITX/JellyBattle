@@ -89,7 +89,7 @@ func GenerateID() (string, error) {
 // VerifyDuplicateID returns true if ID is already used.
 func VerifyDuplicateID(g *Groups, id string) bool {
 	for _, v := range *g {
-		if v.ID == id {
+		if v.GID == id {
 			return true
 		}
 	}

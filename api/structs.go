@@ -13,7 +13,6 @@ type PlayerRequest struct {
 }
 
 type GameRequest struct {
-	GID          string        `json:"gid"`
 	PID          string        `json:"pid"`
 	Name         string        `json:"name"`
 	JumpPosition game.Position `json:"jumpPosition"`
@@ -31,7 +30,7 @@ type GameResponse struct { // Struct Game refers to a game, composed by a group 
 	Deaths   game.Players
 	Board    game.Board
 	Group    game.Group
-	Chat     []game.Message // Not sure yet
+	// Chat     []game.Message // Not sure yet
 	// Timer    time.Duration // Not sure yet
 }
 

@@ -1,2 +1,2 @@
 run:
-	go run main.go
+	clear && go run main.go

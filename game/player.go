@@ -2,19 +2,22 @@ package game
 
 import (
 	"fmt"
+
+	"github.com/gorilla/websocket"
 )
 
 // NewPlayer() constructor returns a player instance.
-func NewPlayer(name string) IPLayer {
+func NewPlayer(name string, conn *websocket.Conn) IPLayer {
 	id, err := GenerateID()
 	if err != nil {
 		fmt.Println(err)
 	}
 
 	player := &Player{
-		ID:   id,
+		PID:  id,
 		Name: name,
 		Rank: uint8(0),
+		Conn: conn,
 	}
 
 	if DebugModePlayer() {
@@ -64,7 +67,7 @@ func (player *Player) GetJumpArea() {
 
 // JumpTo() is the function that changes player's Position to its JumpPosition.
 func (player *Player) JumpTo() {
-	player.Position.Row, player.Position.Column = player.JumpPosition.Row, player.JumpPosition.Column
+	player.CurrentPosition.Row, player.CurrentPosition.Column = player.JumpToPosition.Row, player.JumpToPosition.Column
 
 	if DebugModePlayer() {
 		fmt.Printf("%v: %+v\n\n", Trace(""), *player)
@@ -73,7 +76,7 @@ func (player *Player) JumpTo() {
 
 // NextJump() is the function that receives the next JumpPosition. Where the player intent to move on next round.
 func (player *Player) NextJump(p Position) {
-	player.JumpPosition.Row, player.JumpPosition.Column = p.Row, p.Column
+	player.JumpToPosition.Row, player.JumpToPosition.Column = p.Row, p.Column
 
 	if DebugModePlayer() {
 		fmt.Printf("%v: %+v\n\n", Trace(""), *player)

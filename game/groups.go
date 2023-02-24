@@ -46,7 +46,7 @@ func (groups *Groups) RemoveGroup(g Group) {
 func (groups *Groups) FindGroup(g Group) (i int) {
 	i = -1
 	for k, v := range *groups {
-		if v.ID == g.ID {
+		if v.GID == g.GID {
 			i = k
 			break
 		}

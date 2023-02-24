@@ -27,8 +27,9 @@ func VerifyAvailablePlayersList() {
 				fmt.Println(fmt.Errorf(err.Error())) // horrible
 				os.Exit(1)
 			}
-	
+
 			fmt.Printf("Created a game: %+v.\n\n", createdGame.GetGame())
+
 			game.GAMES.AddGame(createdGame.GetGame())
 	
 			fmt.Printf("Added a game to games: %+v.\n", game.GAMES.GetGames())

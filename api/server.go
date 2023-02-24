@@ -11,30 +11,32 @@ func Server() error {
 	// Create a file server which serves static files out of the "./frontend" directory.
 	// Use the http.Handle() function to register the file server as the handler for all URL paths that start with "/frontend/". For matching
 	// paths, we strip the "/frontend" prefix before the request reaches the file server.
-	fileServer := http.FileServer(http.Dir("./frontend"))
-	http.Handle("/frontend/", http.StripPrefix("/frontend", fileServer))
+	fileServer := http.FileServer(http.Dir(DOT_FRONTEND))
+	http.Handle(_FRONTEND_, http.StripPrefix(_FRONTEND, fileServer))
 
-	// Player
-	http.HandleFunc("/player/create", CreatePlayer)
+	// DISABLED Player
+	// http.HandleFunc(_PLAYER_CREATE, CreatePlayer)
 	// PlayerList
-	http.HandleFunc("/playerlist", GetAvailablePlayersList)
-	http.HandleFunc("/playerlist/creategroup", GroupFourPlayers)
+	http.HandleFunc(_PLAYERLIST, GetAvailablePlayersList)
+	http.HandleFunc(_PLAYERLIST_CREATEGROUP, GroupFourPlayers)
 	// Games
-	http.HandleFunc("/games", GetGames)
-	http.HandleFunc("/games/getbyid", GetGameByID)
+	http.HandleFunc(_GAMES, GetGames)
+	http.HandleFunc(_GAMES_GETBYID, GetGameByID)
 	// Groups
-	http.HandleFunc("/groups", GetGroups)
+	http.HandleFunc(_GROUPS, GetGroups)
 	// Game
-	http.HandleFunc("/game/start", StartGame)
-	http.HandleFunc("/game/create", CreateGame)
-	// REST API
-	http.HandleFunc("/", GetHome)
-	http.HandleFunc("/ping", GetPing)
-	http.HandleFunc("/test", Test)
-	
+	http.HandleFunc(_GAME_START, StartGame)
+	http.HandleFunc(_GAME_CREATE, CreateGame)
+
 	// WEBSOCKET
-	http.HandleFunc("/ws/start", WSGame)
-	http.HandleFunc("/ws/playerlist", WSPlayerList)
+	http.HandleFunc(_WS_START_GID, WSGame)
+	http.HandleFunc(_WS_PLAYERLIST, WSPlayerList)
+	http.HandleFunc(_WS_PLAYER_CREATE, WSPlayerCreate)
+
+	// REST API
+	http.HandleFunc(_ROOT, GetHome)
+	http.HandleFunc(_PING, GetPing)
+	http.HandleFunc(_TEST, Test)
 
 	PORT := os.Getenv("PORT")
 
